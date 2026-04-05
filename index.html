@@ -6,6 +6,7 @@
 <title>Jiro — Control Panel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 <style>
   :root {
     --sky:       #d6eaf8;
@@ -67,7 +68,7 @@
     display: flex; align-items: center; justify-content: center;
     flex-direction: column; gap: 20px; z-index: 200;
   }
-  .loading-bear { font-size: 64px; animation: bounce 1s ease-in-out infinite; }
+  .loading-bear { font-size: 64px; animation: bounce 1s ease-in-out infinite; color: var(--blue); }
   @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
   .loading-text { font-family: var(--font-head); font-size: 18px; color: var(--navy2); font-weight: 700; }
   .loading-dots::after { content: ''; animation: dots 1.5s steps(4,end) infinite; }
@@ -90,7 +91,7 @@
       var(--scarf1) 0px, var(--scarf1) 20px,
       var(--scarf2) 20px, var(--scarf2) 40px);
   }
-  .login-bear { font-size: 72px; display: block; margin-bottom: 4px; filter: drop-shadow(0 4px 12px #4a90d940); }
+  .login-bear { font-size: 72px; display: block; margin-bottom: 4px; filter: drop-shadow(0 4px 12px #4a90d940); color: var(--blue); }
   .login-title { font-family: var(--font-head); font-size: 38px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
   .login-sub { font-size: 13px; color: var(--text3); font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
   .login-badge {
@@ -161,7 +162,7 @@
     box-shadow: 2px 0 12px #4a90d910;
   }
   .sidebar-mascot { text-align: center; padding: 12px 8px 20px; border-bottom: 2px dashed var(--border); margin-bottom: 16px; }
-  .sidebar-mascot-emoji { font-size: 48px; display: block; margin-bottom: 4px; }
+  .sidebar-mascot-emoji { font-size: 48px; display: block; margin-bottom: 4px; color: var(--blue); }
   .sidebar-mascot-name { font-family: var(--font-head); font-size: 16px; font-weight: 800; color: var(--navy); }
   .sidebar-mascot-sub { font-size: 11px; color: var(--text3); font-weight: 600; }
   .sidebar-section { font-size: 10px; font-weight: 800; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; padding: 0 12px 6px; margin-top: 8px; }
@@ -276,7 +277,7 @@
 
   /* No guild */
   .no-guild { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; gap: 14px; }
-  .no-guild-bear { font-size: 80px; animation: sway 3s ease-in-out infinite; }
+  .no-guild-bear { font-size: 80px; animation: sway 3s ease-in-out infinite; color: var(--blue); }
   @keyframes sway { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
   .no-guild-title { font-family: var(--font-head); font-size: 22px; font-weight: 800; color: var(--navy); }
   .no-guild-sub { font-size: 14px; color: var(--text3); font-weight: 600; line-height: 1.6; }
@@ -304,7 +305,7 @@
 <div class="snowflakes" id="snowflakes"></div>
 
 <div id="loading">
-  <div class="loading-bear">🐻‍❄️</div>
+  <div class="loading-bear"><i class="fas fa-snowflake"></i></div>
   <div class="loading-text">Loading Jiro<span class="loading-dots"></span></div>
 </div>
 
@@ -313,10 +314,10 @@
 <!-- Login -->
 <div id="login-screen">
   <div class="login-card">
-    <span class="login-bear">🐻‍❄️</span>
+    <span class="login-bear"><i class="fas fa-snowflake"></i></span>
     <div class="login-title">Jiro</div>
     <div class="login-sub">Control Panel</div>
-    <div class="login-badge">❄️ Powered by NixAI · Made by Blueey</div>
+    <div class="login-badge"><i class="fas fa-snowflake"></i> Powered by NixAI · Made by Blueey</div>
     <a class="btn-discord" id="login-btn" href="#">
       <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.032.052a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
       Login with Discord
@@ -327,7 +328,7 @@
 <!-- App -->
 <div id="app">
   <div class="topbar">
-    <div class="topbar-logo"><span style="font-size:28px">🐻‍❄️</span> Jiro</div>
+    <div class="topbar-logo"><span style="font-size:28px;color:var(--blue)"><i class="fas fa-snowflake"></i></span> Jiro</div>
     <div class="guild-select-wrap">
       <label>Server</label>
       <select class="guild-select" id="guild-select"><option value="">— Pick a server —</option></select>
@@ -344,36 +345,36 @@
     <div class="status-dot"></div>
     <span>Connected to Supabase</span>
     <span id="guild-id-label" style="color:#7ab0d4;margin-left:4px"></span>
-    <span class="save-indicator" id="save-indicator">✓ Saved!</span>
+    <span class="save-indicator" id="save-indicator"><i class="fas fa-check"></i> Saved!</span>
   </div>
 
   <div class="main">
     <nav class="sidebar">
       <div class="sidebar-mascot">
-        <span class="sidebar-mascot-emoji">🐻‍❄️</span>
+        <span class="sidebar-mascot-emoji"><i class="fas fa-snowflake"></i></span>
         <div class="sidebar-mascot-name">Jiro</div>
-        <div class="sidebar-mascot-sub">Your cozy bot pal ❄️</div>
+        <div class="sidebar-mascot-sub">Your cozy bot pal <i class="fas fa-snowflake" style="font-size:10px"></i></div>
       </div>
       <div class="sidebar-section">Settings</div>
-      <div class="nav-item active" data-section="moderation"><span class="nav-icon">🔨</span> Moderation</div>
-      <div class="nav-item" data-section="automod"><span class="nav-icon">🤖</span> Auto-Mod</div>
-      <div class="nav-item" data-section="warnings"><span class="nav-icon">⚠️</span> Warnings</div>
-      <div class="nav-item" data-section="welcome"><span class="nav-icon">👋</span> Welcome</div>
-      <div class="nav-item" data-section="logs"><span class="nav-icon">📋</span> Logs</div>
-      <div class="nav-item" data-section="ai"><span class="nav-icon">🧠</span> AI</div>
-      <div class="nav-item" data-section="roles"><span class="nav-icon">🎭</span> Roles</div>
+      <div class="nav-item active" data-section="moderation"><span class="nav-icon"><i class="fas fa-hammer"></i></span> Moderation</div>
+      <div class="nav-item" data-section="automod"><span class="nav-icon"><i class="fas fa-robot"></i></span> Auto-Mod</div>
+      <div class="nav-item" data-section="warnings"><span class="nav-icon"><i class="fas fa-exclamation-triangle"></i></span> Warnings</div>
+      <div class="nav-item" data-section="welcome"><span class="nav-icon"><i class="fas fa-hand-paper"></i></span> Welcome</div>
+      <div class="nav-item" data-section="logs"><span class="nav-icon"><i class="fas fa-clipboard-list"></i></span> Logs</div>
+      <div class="nav-item" data-section="ai"><span class="nav-icon"><i class="fas fa-brain"></i></span> AI</div>
+      <div class="nav-item" data-section="roles"><span class="nav-icon"><i class="fas fa-theater-masks"></i></span> Roles</div>
     </nav>
 
     <div class="content">
       <div class="no-guild" id="no-guild-msg">
-        <div class="no-guild-bear">🐻‍❄️</div>
-        <div class="no-guild-title">Hey there! Pick a server ☃️</div>
+        <div class="no-guild-bear"><i class="fas fa-snowflake"></i></div>
+        <div class="no-guild-title">Hey there! Pick a server <i class="fas fa-snowman"></i></div>
         <div class="no-guild-sub">Select a server from the dropdown above.<br>Only servers where you're an admin will appear.</div>
       </div>
 
       <!-- Moderation -->
       <div class="section active" id="section-moderation">
-        <div class="section-header"><span class="section-icon">🔨</span><div><div class="section-title">Moderation</div><div class="section-desc">Core mod settings and defaults</div></div></div>
+        <div class="section-header"><span class="section-icon"><i class="fas fa-hammer"></i></span><div><div class="section-title">Moderation</div><div class="section-desc">Core mod settings and defaults</div></div></div>
         <div class="card">
           <div class="card-title">Default Mute Duration</div>
           <div class="card-desc">Used when no duration is given with ?mute</div>
@@ -388,16 +389,16 @@
           <div class="card-title">Channel Controls</div>
           <div class="card-desc">Use these commands in Discord to lock/unlock channels or change nicknames</div>
           <div class="card-row">
-            <span class="info-pill">🔒 ?lock [reason]</span>
-            <span class="info-pill">🔓 ?unlock</span>
-            <span class="info-pill">✏️ ?nickname @user [name]</span>
+            <span class="info-pill"><i class="fas fa-lock"></i> ?lock [reason]</span>
+            <span class="info-pill"><i class="fas fa-lock-open"></i> ?unlock</span>
+            <span class="info-pill"><i class="fas fa-pencil-alt"></i> ?nickname @user [name]</span>
           </div>
         </div>
       </div>
 
       <!-- Auto-Mod -->
       <div class="section" id="section-automod">
-        <div class="section-header"><span class="section-icon">🤖</span><div><div class="section-title">Auto-Mod</div><div class="section-desc">Automatic rule enforcement</div></div></div>
+        <div class="section-header"><span class="section-icon"><i class="fas fa-robot"></i></span><div><div class="section-title">Auto-Mod</div><div class="section-desc">Automatic rule enforcement</div></div></div>
         <div class="card">
           <div class="card-title">Toggles</div>
           <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Auto-Mod Enabled</div><div class="toggle-hint">Master switch for all auto-mod features</div></div><label class="toggle"><input type="checkbox" id="automod_enabled" /><span class="toggle-slider"></span></label></div>
@@ -413,7 +414,7 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-title">🚫 Banned Words</div>
+          <div class="card-title"><i class="fas fa-ban"></i> Banned Words</div>
           <div class="card-desc">Messages with these words get deleted and the sender gets muted</div>
           <div class="tag-list" id="bad-words-list"></div>
           <div class="tag-input-row">
@@ -425,7 +426,7 @@
 
       <!-- Warnings -->
       <div class="section" id="section-warnings">
-        <div class="section-header"><span class="section-icon">⚠️</span><div><div class="section-title">Warnings</div><div class="section-desc">Auto-escalation thresholds</div></div></div>
+        <div class="section-header"><span class="section-icon"><i class="fas fa-exclamation-triangle"></i></span><div><div class="section-title">Warnings</div><div class="section-desc">Auto-escalation thresholds</div></div></div>
         <div class="card">
           <div class="card-title">Escalation Thresholds</div>
           <div class="card-desc">At how many warnings should Jiro automatically escalate punishment?</div>
@@ -440,7 +441,7 @@
 
       <!-- Welcome -->
       <div class="section" id="section-welcome">
-        <div class="section-header"><span class="section-icon">👋</span><div><div class="section-title">Welcome</div><div class="section-desc">Greet new members automatically</div></div></div>
+        <div class="section-header"><span class="section-icon"><i class="fas fa-hand-paper"></i></span><div><div class="section-title">Welcome</div><div class="section-desc">Greet new members automatically</div></div></div>
         <div class="card">
           <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Welcome Messages Enabled</div><div class="toggle-hint">Send a message when someone new joins</div></div><label class="toggle"><input type="checkbox" id="welcome_enabled" /><span class="toggle-slider"></span></label></div>
         </div>
@@ -452,7 +453,7 @@
         <div class="card">
           <div class="card-title">Welcome Message</div>
           <div class="card-desc">Placeholders: <span class="info-pill" style="font-size:11px">{user}</span> <span class="info-pill" style="font-size:11px">{username}</span> <span class="info-pill" style="font-size:11px">{server}</span> <span class="info-pill" style="font-size:11px">{count}</span></div>
-          <div class="field" style="margin-top:10px"><textarea id="welcome_message" rows="3" placeholder="👋 Welcome to **{server}**, {user}! You are member **#{count}**." oninput="updateWelcomePreview()"></textarea></div>
+          <div class="field" style="margin-top:10px"><textarea id="welcome_message" rows="3" placeholder="Welcome to **{server}**, {user}! You are member **#{count}**." oninput="updateWelcomePreview()"></textarea></div>
           <div class="preview-label">Preview</div>
           <div class="welcome-preview" id="welcome-preview">—</div>
         </div>
@@ -465,7 +466,7 @@
 
       <!-- Logs -->
       <div class="section" id="section-logs">
-        <div class="section-header"><span class="section-icon">📋</span><div><div class="section-title">Logs</div><div class="section-desc">Moderation and event logging</div></div></div>
+        <div class="section-header"><span class="section-icon"><i class="fas fa-clipboard-list"></i></span><div><div class="section-title">Logs</div><div class="section-desc">Moderation and event logging</div></div></div>
         <div class="card">
           <div class="card-title">Log Channel ID</div>
           <div class="card-desc">All mod actions, message edits/deletes, joins, leaves, role changes and nickname changes will be logged here</div>
@@ -475,7 +476,7 @@
 
       <!-- AI -->
       <div class="section" id="section-ai">
-        <div class="section-header"><span class="section-icon">🧠</span><div><div class="section-title">AI</div><div class="section-desc">Groq-powered AI configuration</div></div></div>
+        <div class="section-header"><span class="section-icon"><i class="fas fa-brain"></i></span><div><div class="section-title">AI</div><div class="section-desc">Groq-powered AI configuration</div></div></div>
         <div class="card">
           <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">AI Features Enabled</div><div class="toggle-hint">Allows ?ask, ?roast, ?explain, @mentions and more</div></div><label class="toggle"><input type="checkbox" id="ai_enabled" /><span class="toggle-slider"></span></label></div>
         </div>
@@ -484,8 +485,8 @@
           <div class="card-desc">Which Groq model to use for this server</div>
           <div class="field"><label>Model</label>
             <select id="ai_model" style="max-width:340px">
-              <option value="llama-3.1-8b-instant">llama-3.1-8b-instant (fast ⚡)</option>
-              <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile (smart 🧠)</option>
+              <option value="llama-3.1-8b-instant">llama-3.1-8b-instant (fast)</option>
+              <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile (smart)</option>
               <option value="llama-3.1-70b-versatile">llama-3.1-70b-versatile</option>
               <option value="mixtral-8x7b-32768">mixtral-8x7b-32768</option>
               <option value="gemma2-9b-it">gemma2-9b-it</option>
@@ -501,7 +502,7 @@
 
       <!-- Roles -->
       <div class="section" id="section-roles">
-        <div class="section-header"><span class="section-icon">🎭</span><div><div class="section-title">Roles</div><div class="section-desc">Self-assignable role management</div></div></div>
+        <div class="section-header"><span class="section-icon"><i class="fas fa-theater-masks"></i></span><div><div class="section-title">Roles</div><div class="section-desc">Self-assignable role management</div></div></div>
         <div class="card">
           <div class="card-title">Self-Assignable Role IDs</div>
           <div class="card-desc">Members can assign these roles themselves using <span class="info-pill" style="font-size:11px">?iam &lt;role&gt;</span></div>
@@ -516,10 +517,10 @@
   </div>
 
   <div class="save-bar" id="save-bar">
-    <span class="save-bar-msg"><span style="font-size:20px">❄️</span> You have unsaved changes</span>
+    <span class="save-bar-msg"><span style="font-size:16px;color:var(--blue)"><i class="fas fa-snowflake"></i></span> You have unsaved changes</span>
     <div style="display:flex;gap:10px">
       <button class="btn btn-danger btn-sm" id="discard-btn">Discard</button>
-      <button class="btn btn-primary" id="save-btn">💾 Save Changes</button>
+      <button class="btn btn-primary" id="save-btn"><i class="fas fa-save"></i> Save Changes</button>
     </div>
   </div>
 </div>
@@ -536,11 +537,11 @@ const REDIRECT_URI      = window.location.origin + window.location.pathname;
 // ── Snowflakes ────────────────────────────────────────
 (function(){
   const c = document.getElementById('snowflakes');
-  ['❄','❅','❆','·','•'].forEach(() => {
+  [1,2,3].forEach(() => {
     for(let i=0;i<4;i++){
       const el = document.createElement('div');
       el.className = 'snowflake';
-      el.textContent = ['❄','❅','❆','·','•'][Math.floor(Math.random()*5)];
+      el.innerHTML = '<i class="fas fa-snowflake"></i>';
       el.style.cssText = `left:${Math.random()*100}%;font-size:${8+Math.random()*14}px;opacity:${.3+Math.random()*.5};animation-duration:${6+Math.random()*12}s;animation-delay:${-Math.random()*12}s;`;
       c.appendChild(el);
     }
@@ -548,7 +549,8 @@ const REDIRECT_URI      = window.location.origin + window.location.pathname;
 })();
 
 // ── Init ──────────────────────────────────────────────
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+let supabase;
+try { supabase = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON); } catch(e) { console.error('Supabase init failed', e); }
 let currentGuildId=null, config={}, badWords=[], selfRoles=[], dirty=false;
 
 // ── Auth ──────────────────────────────────────────────
@@ -574,21 +576,23 @@ async function handleCallback(code, state){
 
 async function loadUser(token){
   showLoading('Loading your servers…');
-  const [mR,gR] = await Promise.all([
-    fetch('https://discord.com/api/users/@me',{headers:{Authorization:`Bearer ${token}`}}),
-    fetch('https://discord.com/api/users/@me/guilds',{headers:{Authorization:`Bearer ${token}`}})
-  ]);
-  if(!mR.ok||!gR.ok){ showToast('Failed to fetch Discord data.',true); return showLogin(); }
-  const me=await mR.json(), guilds=await gR.json();
-  document.getElementById('user-tag').textContent = me.username;
-  document.getElementById('user-avatar').src = me.avatar
-    ? `https://cdn.discordapp.com/avatars/${me.id}/${me.avatar}.png?size=64`
-    : `https://cdn.discordapp.com/embed/avatars/${(me.discriminator||0)%5}.png`;
-  const adminGuilds = guilds.filter(g=>(BigInt(g.permissions)&BigInt(0x8))!==BigInt(0));
-  const sel = document.getElementById('guild-select');
-  sel.innerHTML = '<option value="">— Pick a server —</option>';
-  adminGuilds.forEach(g=>{ const o=document.createElement('option'); o.value=g.id; o.textContent=g.name; sel.appendChild(o); });
-  hideLoading(); showApp();
+  try {
+    const [mR,gR] = await Promise.all([
+      fetch('https://discord.com/api/users/@me',{headers:{Authorization:`Bearer ${token}`}}),
+      fetch('https://discord.com/api/users/@me/guilds',{headers:{Authorization:`Bearer ${token}`}})
+    ]);
+    if(!mR.ok||!gR.ok){ showToast('Failed to fetch Discord data.',true); return showLogin(); }
+    const me=await mR.json(), guilds=await gR.json();
+    document.getElementById('user-tag').textContent = me.username;
+    document.getElementById('user-avatar').src = me.avatar
+      ? `https://cdn.discordapp.com/avatars/${me.id}/${me.avatar}.png?size=64`
+      : `https://cdn.discordapp.com/embed/avatars/${(me.discriminator||0)%5}.png`;
+    const adminGuilds = guilds.filter(g=>(BigInt(g.permissions)&BigInt(0x8))!==BigInt(0));
+    const sel = document.getElementById('guild-select');
+    sel.innerHTML = '<option value="">— Pick a server —</option>';
+    adminGuilds.forEach(g=>{ const o=document.createElement('option'); o.value=g.id; o.textContent=g.name; sel.appendChild(o); });
+    hideLoading(); showApp();
+  } catch(e) { showToast('Connection error: '+e.message, true); showLogin(); }
 }
 
 // ── Config ────────────────────────────────────────────
@@ -613,7 +617,7 @@ async function saveConfig(){
   try{
     const {error} = await supabase.from('guild_configs').upsert({guild_id:currentGuildId,config:nc,updated_at:new Date().toISOString()},{onConflict:'guild_id'});
     if(error) throw error;
-    config=nc; dirty=false; updateSaveBar(); showToast('✓ Config saved!');
+    config=nc; dirty=false; updateSaveBar(); showToast('Config saved!');
     const si=document.getElementById('save-indicator'); si.classList.add('visible'); setTimeout(()=>si.classList.remove('visible'),3000);
   }catch(e){ showToast('Save failed: '+e.message,true); }
 }
@@ -664,13 +668,13 @@ function populateForm(){
 }
 
 // ── Bad words ─────────────────────────────────────────
-function renderBadWords(){ document.getElementById('bad-words-list').innerHTML=badWords.map((w,i)=>`<span class="tag">${w}<button class="tag-remove" onclick="removeBadWord(${i})">✕</button></span>`).join(''); }
+function renderBadWords(){ document.getElementById('bad-words-list').innerHTML=badWords.map((w,i)=>`<span class="tag">${w}<button class="tag-remove" onclick="removeBadWord(${i})"><i class=\"fas fa-times\"></i></button></span>`).join(''); }
 function addBadWord(){ const inp=document.getElementById('bad-word-input'),w=inp.value.trim().toLowerCase(); if(!w||badWords.includes(w))return; badWords.push(w);inp.value='';renderBadWords();markDirty(); }
 function removeBadWord(i){ badWords.splice(i,1);renderBadWords();markDirty(); }
 document.getElementById('bad-word-input').addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();addBadWord();} });
 
 // ── Self roles ────────────────────────────────────────
-function renderSelfRoles(){ document.getElementById('self-roles-list').innerHTML=selfRoles.map((r,i)=>`<span class="tag">${r}<button class="tag-remove" onclick="removeSelfRole(${i})">✕</button></span>`).join(''); }
+function renderSelfRoles(){ document.getElementById('self-roles-list').innerHTML=selfRoles.map((r,i)=>`<span class="tag">${r}<button class="tag-remove" onclick="removeSelfRole(${i})"><i class=\"fas fa-times\"></i></button></span>`).join(''); }
 function addSelfRole(){ const inp=document.getElementById('self-role-input'),r=inp.value.trim(); if(!r||selfRoles.includes(r))return; selfRoles.push(r);inp.value='';renderSelfRoles();markDirty(); }
 function removeSelfRole(i){ selfRoles.splice(i,1);renderSelfRoles();markDirty(); }
 document.getElementById('self-role-input').addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();addSelfRole();} });
@@ -678,7 +682,7 @@ document.getElementById('self-role-input').addEventListener('keydown',e=>{ if(e.
 // ── Welcome preview ───────────────────────────────────
 function updateWelcomePreview(){
   document.getElementById('welcome-preview').textContent =
-    (v('welcome_message')||'👋 Welcome to **{server}**, {user}! You are member **#{count}**.')
+    (v('welcome_message')||'Welcome to **{server}**, {user}! You are member **#{count}**.')
     .replace(/{user}/g,'@NewMember').replace(/{username}/g,'NewMember')
     .replace(/{server}/g,'Your Server').replace(/{count}/g,'42');
 }
@@ -702,7 +706,7 @@ function showLoading(msg='Loading…'){ document.getElementById('loading').style
 function hideLoading(){ document.getElementById('loading').style.display='none'; }
 function showLogin(){ hideLoading(); document.getElementById('login-screen').style.display='flex'; document.getElementById('app').style.display='none'; }
 function showApp(){ document.getElementById('login-screen').style.display='none'; document.getElementById('app').style.display='block'; }
-function showToast(msg,isError=false){ const t=document.getElementById('toast'); t.innerHTML=(isError?'❌ ':'✅ ')+msg; t.className=(isError?'error':'')+' show'; setTimeout(()=>t.className=isError?'error':'',3500); }
+function showToast(msg,isError=false){ const t=document.getElementById('toast'); t.innerHTML=(isError?'<i class="fas fa-times-circle"></i> ':'<i class="fas fa-check-circle"></i> ')+msg; t.className=(isError?'error':'')+' show'; setTimeout(()=>t.className=isError?'error':'',3500); }
 
 // ── Nav ───────────────────────────────────────────────
 document.querySelectorAll('.nav-item').forEach(item=>{
@@ -727,11 +731,13 @@ document.getElementById('login-btn').addEventListener('click',e=>{ e.preventDefa
 
 // ── Bootstrap ─────────────────────────────────────────
 (async()=>{
-  const p=new URLSearchParams(window.location.search), code=p.get('code'), state=p.get('state');
-  if(code){ await handleCallback(code,state); return; }
-  const token=sessionStorage.getItem('discord_token');
-  if(token){ await loadUser(token); return; }
-  hideLoading(); showLogin();
+  try {
+    const p=new URLSearchParams(window.location.search), code=p.get('code'), state=p.get('state');
+    if(code){ await handleCallback(code,state); return; }
+    const token=sessionStorage.getItem('discord_token');
+    if(token){ await loadUser(token); return; }
+    hideLoading(); showLogin();
+  } catch(e) { console.error('Bootstrap error', e); hideLoading(); showLogin(); }
 })();
 </script>
 </body>
