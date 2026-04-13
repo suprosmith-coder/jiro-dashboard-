@@ -1,760 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Jiro — Control Panel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Jiro — Discord Bot Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --sky:       #d6eaf8;
-    --sky2:      #e8f4fd;
-    --sky3:      #f0f8ff;
-    --white:     #ffffff;
-    --navy:      #1a3a5c;
-    --navy2:     #2a527a;
-    --blue:      #4a90d9;
-    --blue2:     #5ba3e8;
-    --blue-soft: #b8d9f5;
-    --scarf1:    #4a7fc1;
-    --scarf2:    #e8f0fa;
-    --border:    #c5dff5;
-    --border2:   #a8ccea;
-    --text:      #1a3a5c;
-    --text2:     #4a6a8a;
-    --text3:     #7a9ab5;
-    --green:     #4caf82;
-    --red:       #e05a6a;
-    --shadow:    0 4px 20px #4a90d920;
-    --shadow2:   0 8px 32px #4a90d930;
-    --font:      'Nunito', sans-serif;
-    --font-head: 'Baloo 2', cursive;
-  }
+:root{
+  --bg:#09090f;--s1:#0f1018;--s2:#15161f;--s3:#1c1d28;
+  --bo:rgba(255,255,255,.06);--bom:rgba(255,255,255,.11);
+  --ac:#5865F2;--acg:rgba(88,101,242,.28);--acs:rgba(88,101,242,.14);
+  --t1:#eeeef5;--t2:#9498b3;--t3:#555878;--t4:#2f3148;
+  --gr:#23a55a;--rd:#f23f43;--fn:'Outfit',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:var(--bg);color:var(--t1);font-family:var(--fn);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.022;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* MESH */
+.mesh{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(90px)}
+.o1{width:700px;height:700px;top:-220px;right:-120px;background:radial-gradient(circle,rgba(88,101,242,.22),transparent 68%);animation:o1 13s ease-in-out infinite alternate}
+.o2{width:550px;height:550px;bottom:-170px;left:-90px;background:radial-gradient(circle,rgba(35,165,90,.16),transparent 68%);animation:o2 16s ease-in-out infinite alternate}
+.o3{width:400px;height:400px;top:45%;left:35%;background:radial-gradient(circle,rgba(88,101,242,.10),transparent 68%);animation:o3 19s ease-in-out infinite alternate}
+@keyframes o1{from{transform:translate(0,0) scale(1)}to{transform:translate(70px,55px) scale(1.12)}}
+@keyframes o2{from{transform:translate(0,0)}to{transform:translate(-55px,65px) scale(1.1)}}
+@keyframes o3{from{transform:translate(0,0)}to{transform:translate(90px,-70px)}}
 
-  body {
-    background: var(--sky);
-    color: var(--text);
-    font-family: var(--font);
-    font-size: 15px;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+/* HEX DECORATIONS */
+.hexes{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.hx{position:absolute;opacity:.055}
+.hx svg{width:100%;height:100%}
+.hx1{width:380px;height:380px;top:-80px;right:40px;animation:hs 50s linear infinite}
+.hx2{width:260px;height:260px;bottom:40px;right:210px;animation:hs 35s linear infinite reverse}
+.hx3{width:200px;height:200px;top:60px;left:40px;animation:hs 60s linear infinite}
+.hx4{width:140px;height:140px;bottom:100px;left:260px;animation:hs 28s linear infinite reverse}
+@keyframes hs{to{transform:rotate(360deg)}}
 
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      radial-gradient(circle at 15% 15%, #ffffff60 0%, transparent 45%),
-      radial-gradient(circle at 85% 85%, #b8d9f530 0%, transparent 45%);
-    pointer-events: none;
-    z-index: 0;
-  }
+/* NAVBAR */
+nav{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:22px 60px;border-bottom:1px solid var(--bo)}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo-mark{width:38px;height:38px;background:var(--ac);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;box-shadow:0 0 20px var(--acg);flex-shrink:0}
+.nav-logo-name{font-size:20px;font-weight:800;color:var(--t1);letter-spacing:-.3px}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-link{color:var(--t3);font-size:14px;font-weight:500;text-decoration:none;transition:.15s}
+.nav-link:hover{color:var(--t1)}
+.nav-cta{padding:9px 20px;background:var(--ac);color:#fff;font-family:var(--fn);font-size:14px;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:.15s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 18px rgba(88,101,242,.35)}
+.nav-cta:hover{background:#4752c4;transform:translateY(-1px)}
+.nav-cta svg{width:18px;height:18px;fill:currentColor}
 
-  /* Snowflakes */
-  .snowflakes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-  .snowflake {
-    position: absolute; top: -20px; color: #fff; opacity: .6;
-    animation: fall linear infinite;
-  }
-  @keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
+/* HERO */
+.hero{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding:100px 24px 80px;min-height:calc(100vh - 80px);justify-content:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--acs);border:1px solid rgba(88,101,242,.3);border-radius:20px;font-size:12px;font-weight:600;color:#99a8ff;margin-bottom:28px;animation:fadein .6s both}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:#99a8ff;box-shadow:0 0 8px #99a8ff;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.hero-h1{font-size:clamp(44px,7vw,82px);font-weight:900;line-height:1.04;letter-spacing:-2.5px;color:var(--t1);margin-bottom:22px;animation:fadein .6s .1s both}
+.hero-h1 .ac{background:linear-gradient(135deg,#5865F2,#8b99ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(16px,2.5vw,20px);color:var(--t3);max-width:560px;line-height:1.7;margin-bottom:44px;font-weight:400;animation:fadein .6s .2s both}
+.hero-btns{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadein .6s .3s both}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;padding:15px 30px;background:var(--ac);color:#fff;font-family:var(--fn);font-size:16px;font-weight:700;border:none;border-radius:12px;cursor:pointer;transition:.18s;text-decoration:none;box-shadow:0 6px 28px rgba(88,101,242,.4)}
+.btn-primary:hover{background:#4752c4;transform:translateY(-2px);box-shadow:0 8px 36px rgba(88,101,242,.55)}
+.btn-primary svg{width:22px;height:22px;fill:currentColor;flex-shrink:0}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:15px 26px;background:transparent;border:1px solid var(--bom);color:var(--t2);font-family:var(--fn);font-size:15px;font-weight:600;border-radius:12px;cursor:pointer;transition:.18s;text-decoration:none}
+.btn-secondary:hover{background:var(--s2);border-color:rgba(88,101,242,.4);color:var(--t1)}
+.hero-note{font-size:12px;color:var(--t4);margin-top:18px;animation:fadein .6s .4s both}
+@keyframes fadein{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 
-  /* Loading */
-  #loading {
-    position: fixed; inset: 0; background: var(--sky);
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 20px; z-index: 200;
-  }
-  .loading-bear { font-size: 64px; animation: bounce 1s ease-in-out infinite; color: var(--blue); }
-  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
-  .loading-text { font-family: var(--font-head); font-size: 18px; color: var(--navy2); font-weight: 700; }
-  .loading-dots::after { content: ''; animation: dots 1.5s steps(4,end) infinite; }
-  @keyframes dots { 0%{content:''} 25%{content:'.'} 50%{content:'..'} 75%{content:'...'} }
+/* FEATURE CARDS */
+.features{position:relative;z-index:2;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:1100px;margin:0 auto 100px;padding:0 24px}
+.feat-card{background:var(--s1);border:1px solid var(--bo);border-radius:14px;padding:28px;transition:.2s}
+.feat-card:hover{border-color:rgba(88,101,242,.35);transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.35)}
+.feat-icon{font-size:28px;margin-bottom:16px}
+.feat-title{font-size:16px;font-weight:700;color:var(--t1);margin-bottom:8px}
+.feat-desc{font-size:14px;color:var(--t3);line-height:1.65}
 
-  /* Login */
-  #login-screen {
-    position: fixed; inset: 0; display: flex;
-    align-items: center; justify-content: center; z-index: 100;
-  }
-  .login-card {
-    background: var(--white); border-radius: 28px;
-    box-shadow: var(--shadow2), 0 0 0 2px var(--border);
-    padding: 52px 56px; text-align: center;
-    max-width: 420px; width: 90%; position: relative; overflow: hidden;
-  }
-  .login-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
-    background: repeating-linear-gradient(90deg,
-      var(--scarf1) 0px, var(--scarf1) 20px,
-      var(--scarf2) 20px, var(--scarf2) 40px);
-  }
-  .login-bear { font-size: 72px; display: block; margin-bottom: 4px; filter: drop-shadow(0 4px 12px #4a90d940); color: var(--blue); }
-  .login-title { font-family: var(--font-head); font-size: 38px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
-  .login-sub { font-size: 13px; color: var(--text3); font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
-  .login-badge {
-    display: inline-block; background: var(--sky2); color: var(--blue);
-    font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 20px;
-    margin-bottom: 32px; border: 1px solid var(--border);
-  }
-  .btn-discord {
-    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-    background: #5865F2; color: #fff; border: none; padding: 14px 28px;
-    border-radius: 14px; font-family: var(--font); font-size: 16px; font-weight: 800;
-    cursor: pointer; transition: all .2s; text-decoration: none; width: 100%;
-    box-shadow: 0 4px 16px #5865f240;
-  }
-  .btn-discord:hover { background: #4752c4; transform: translateY(-2px); box-shadow: 0 8px 24px #5865f260; }
-  .btn-discord svg { width: 22px; height: 22px; fill: white; }
+/* FOOTER */
+footer{position:relative;z-index:2;text-align:center;padding:32px 24px;border-top:1px solid var(--bo);color:var(--t4);font-size:13px}
+footer a{color:var(--t3);text-decoration:none}
+footer a:hover{color:var(--t1)}
 
-  /* App */
-  #app { display: none; position: relative; z-index: 1; }
-
-  /* Topbar */
-  .topbar {
-    position: sticky; top: 0; z-index: 50;
-    background: #ffffffee; border-bottom: 2px solid var(--border);
-    backdrop-filter: blur(16px);
-    display: flex; align-items: center;
-    padding: 0 28px; height: 64px; gap: 16px;
-    box-shadow: 0 2px 12px #4a90d915;
-  }
-  .topbar-logo { display: flex; align-items: center; gap: 10px; font-family: var(--font-head); font-size: 24px; font-weight: 800; color: var(--navy); }
-  .topbar-sep { flex: 1; }
-  .guild-select-wrap { display: flex; align-items: center; gap: 8px; }
-  .guild-select-wrap label { font-size: 12px; font-weight: 800; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; }
-  select.guild-select {
-    background: var(--sky2); border: 2px solid var(--border); border-radius: 10px;
-    color: var(--navy); font-family: var(--font); font-size: 13px; font-weight: 700;
-    padding: 7px 14px; outline: none; cursor: pointer; min-width: 200px; transition: border-color .2s;
-  }
-  select.guild-select:focus { border-color: var(--blue); }
-  .topbar-user { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text2); }
-  .topbar-avatar { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--border2); }
-  .btn-logout {
-    background: var(--sky2); border: 2px solid var(--border); border-radius: 8px;
-    color: var(--text2); font-family: var(--font); font-size: 12px; font-weight: 800;
-    padding: 6px 14px; cursor: pointer; transition: all .2s;
-  }
-  .btn-logout:hover { background: var(--red); color: #fff; border-color: var(--red); }
-
-  /* Status bar */
-  .statusbar {
-    background: var(--navy); padding: 5px 28px;
-    display: flex; align-items: center; gap: 12px;
-    font-size: 11px; font-weight: 700; color: var(--blue-soft); letter-spacing: .5px;
-  }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-  .save-indicator { margin-left: auto; color: var(--green); opacity: 0; transition: opacity .3s; }
-  .save-indicator.visible { opacity: 1; }
-
-  /* Layout */
-  .main { display: grid; grid-template-columns: 230px 1fr; min-height: calc(100vh - 92px); }
-
-  /* Sidebar */
-  .sidebar {
-    background: var(--white); border-right: 2px solid var(--border);
-    padding: 24px 12px; position: sticky; top: 92px;
-    height: calc(100vh - 92px); overflow-y: auto;
-    box-shadow: 2px 0 12px #4a90d910;
-  }
-  .sidebar-mascot { text-align: center; padding: 12px 8px 20px; border-bottom: 2px dashed var(--border); margin-bottom: 16px; }
-  .sidebar-mascot-emoji { font-size: 48px; display: block; margin-bottom: 4px; color: var(--blue); }
-  .sidebar-mascot-name { font-family: var(--font-head); font-size: 16px; font-weight: 800; color: var(--navy); }
-  .sidebar-mascot-sub { font-size: 11px; color: var(--text3); font-weight: 600; }
-  .sidebar-section { font-size: 10px; font-weight: 800; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; padding: 0 12px 6px; margin-top: 8px; }
-  .nav-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 14px; cursor: pointer; font-weight: 700; font-size: 14px;
-    color: var(--text2); border-radius: 12px; transition: all .15s; margin-bottom: 2px;
-  }
-  .nav-item:hover { background: var(--sky2); color: var(--navy); }
-  .nav-item.active { background: linear-gradient(135deg, var(--scarf1), var(--blue2)); color: #fff; box-shadow: 0 4px 12px #4a90d940; }
-  .nav-icon { font-size: 18px; width: 24px; text-align: center; }
-
-  /* Content */
-  .content { padding: 32px 36px; }
-  .section { display: none; }
-  .section.active { display: block; }
-
-  /* Section header */
-  .section-header {
-    margin-bottom: 24px; display: flex; align-items: center; gap: 14px;
-    background: var(--white); border-radius: 20px; padding: 18px 24px;
-    box-shadow: var(--shadow); border: 2px solid var(--border);
-  }
-  .section-icon { font-size: 32px; }
-  .section-title { font-family: var(--font-head); font-size: 22px; font-weight: 800; color: var(--navy); }
-  .section-desc { font-size: 13px; color: var(--text3); font-weight: 600; margin-top: 1px; }
-
-  /* Cards */
-  .card {
-    background: var(--white); border-radius: 18px; border: 2px solid var(--border);
-    padding: 22px 24px; margin-bottom: 16px; box-shadow: var(--shadow);
-    transition: box-shadow .2s, border-color .2s;
-  }
-  .card:hover { box-shadow: var(--shadow2); border-color: var(--border2); }
-  .card-title { font-family: var(--font-head); font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
-  .card-desc { font-size: 12px; color: var(--text3); font-weight: 600; margin-bottom: 16px; line-height: 1.5; }
-  .card-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  @media(max-width:700px){ .card-grid { grid-template-columns: 1fr; } }
-
-  /* Info pill */
-  .info-pill {
-    display: inline-flex; align-items: center; gap: 4px;
-    background: var(--sky2); border: 1px solid var(--border); border-radius: 20px;
-    padding: 3px 12px; font-size: 12px; font-weight: 700; color: var(--blue);
-  }
-
-  /* Form */
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  .field label { font-size: 11px; font-weight: 800; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; }
-  input[type="text"], input[type="number"], select:not(.guild-select), textarea {
-    background: var(--sky3); border: 2px solid var(--border); border-radius: 10px;
-    color: var(--navy); font-family: var(--font); font-size: 14px; font-weight: 600;
-    padding: 9px 14px; outline: none; width: 100%; transition: border-color .2s, box-shadow .2s;
-  }
-  input[type="text"]:focus, input[type="number"]:focus, select:not(.guild-select):focus, textarea:focus {
-    border-color: var(--blue); box-shadow: 0 0 0 3px #4a90d920;
-  }
-  textarea { resize: vertical; min-height: 80px; }
-  input[type="number"] { width: 110px; }
-
-  /* Toggle */
-  .toggle-wrap { display: flex; align-items: center; justify-content: space-between; padding: 13px 0; border-bottom: 1px solid var(--border); }
-  .toggle-wrap:last-child { border-bottom: none; padding-bottom: 0; }
-  .toggle-wrap:first-child { padding-top: 0; }
-  .toggle-info .toggle-label { font-weight: 800; font-size: 14px; color: var(--navy); margin-bottom: 2px; }
-  .toggle-info .toggle-hint { font-size: 12px; color: var(--text3); font-weight: 600; }
-  .toggle { position: relative; width: 48px; height: 26px; flex-shrink: 0; }
-  .toggle input { opacity: 0; width: 0; height: 0; }
-  .toggle-slider { position: absolute; inset: 0; background: var(--border2); border-radius: 999px; cursor: pointer; transition: .25s; }
-  .toggle-slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 4px; top: 4px; background: #fff; border-radius: 50%; transition: .25s; box-shadow: 0 2px 6px #0002; }
-  .toggle input:checked + .toggle-slider { background: linear-gradient(135deg, var(--scarf1), var(--blue2)); box-shadow: 0 2px 8px #4a90d960; }
-  .toggle input:checked + .toggle-slider::before { transform: translateX(22px); }
-
-  /* Range */
-  .range-wrap { display: flex; align-items: center; gap: 12px; }
-  input[type="range"] { -webkit-appearance: none; width: 160px; height: 6px; background: var(--blue-soft); border: none; border-radius: 999px; outline: none; cursor: pointer; padding: 0; }
-  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--blue); border-radius: 50%; border: 3px solid #fff; box-shadow: 0 2px 8px #4a90d960; cursor: pointer; }
-  .range-val { font-family: var(--font-head); color: var(--blue); font-size: 18px; font-weight: 800; min-width: 32px; text-align: right; }
-
-  /* Buttons */
-  .btn { font-family: var(--font); font-weight: 800; font-size: 13px; padding: 9px 22px; border: none; border-radius: 10px; cursor: pointer; transition: all .2s; }
-  .btn-primary { background: linear-gradient(135deg, var(--scarf1), var(--blue2)); color: #fff; box-shadow: 0 4px 14px #4a90d940; }
-  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px #4a90d960; }
-  .btn-danger { background: var(--sky2); color: var(--text2); border: 2px solid var(--border); }
-  .btn-danger:hover { background: var(--red); color: #fff; border-color: var(--red); }
-  .btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 8px; }
-
-  /* Save bar */
-  .save-bar {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    background: var(--white); border-top: 2px solid var(--border);
-    box-shadow: 0 -4px 20px #4a90d920;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 36px; z-index: 40;
-    transform: translateY(100%); transition: transform .3s cubic-bezier(.34,1.56,.64,1);
-  }
-  .save-bar.visible { transform: translateY(0); }
-  .save-bar-msg { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 14px; color: var(--navy); }
-
-  /* Tags */
-  .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-  .tag { display: inline-flex; align-items: center; gap: 6px; background: var(--sky2); border: 2px solid var(--border); border-radius: 20px; padding: 4px 12px; font-size: 13px; font-weight: 700; color: var(--navy); }
-  .tag-remove { color: var(--text3); cursor: pointer; font-size: 14px; background: none; border: none; padding: 0; line-height: 1; transition: color .15s; }
-  .tag-remove:hover { color: var(--red); }
-  .tag-input-row { display: flex; gap: 8px; margin-top: 12px; }
-  .tag-input-row input { flex: 1; }
-
-  /* Welcome preview */
-  .welcome-preview { background: var(--sky2); border: 2px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-top: 10px; font-size: 14px; color: var(--navy); font-weight: 600; line-height: 1.5; }
-  .preview-label { font-size: 10px; font-weight: 800; color: var(--text3); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
-
-  /* No guild */
-  .no-guild { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; gap: 14px; }
-  .no-guild-bear { font-size: 80px; animation: sway 3s ease-in-out infinite; color: var(--blue); }
-  @keyframes sway { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
-  .no-guild-title { font-family: var(--font-head); font-size: 22px; font-weight: 800; color: var(--navy); }
-  .no-guild-sub { font-size: 14px; color: var(--text3); font-weight: 600; line-height: 1.6; }
-
-  /* Toast */
-  #toast {
-    position: fixed; bottom: 80px; right: 28px;
-    background: var(--white); border: 2px solid var(--green); border-radius: 14px;
-    color: var(--navy); font-weight: 800; font-size: 14px; padding: 12px 20px;
-    box-shadow: var(--shadow2); opacity: 0; transform: translateY(10px) scale(.95);
-    transition: all .3s cubic-bezier(.34,1.56,.64,1); z-index: 999; pointer-events: none;
-  }
-  #toast.error { border-color: var(--red); }
-  #toast.show { opacity: 1; transform: translateY(0) scale(1); }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--sky2); }
-  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 999px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+@media(max-width:640px){nav{padding:18px 20px}.nav-links{display:none}.hero{padding:70px 20px 60px}.features{padding:0 16px}}
 </style>
 </head>
 <body>
-
-<div class="snowflakes" id="snowflakes"></div>
-
-  <div class="loading-text">Loading Jiro<span class="loading-dots"></span></div>
+<div class="mesh"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="hexes">
+  <div class="hx hx1"><svg viewBox="0 0 100 100"><polygon points="50,2 93,25 93,75 50,98 7,75 7,25" fill="none" stroke="white" stroke-width="1.2"/></svg></div>
+  <div class="hx hx2"><svg viewBox="0 0 100 100"><polygon points="50,2 93,25 93,75 50,98 7,75 7,25" fill="none" stroke="white" stroke-width="1.2"/></svg></div>
+  <div class="hx hx3"><svg viewBox="0 0 100 100"><polygon points="50,2 93,25 93,75 50,98 7,75 7,25" fill="none" stroke="white" stroke-width="1.2"/></svg></div>
+  <div class="hx hx4"><svg viewBox="0 0 100 100"><polygon points="50,2 93,25 93,75 50,98 7,75 7,25" fill="none" stroke="white" stroke-width="1.2"/></svg></div>
 </div>
 
-<div id="toast"></div>
+<nav>
+  <a class="nav-logo" href="index.html">
+    <div class="nav-logo-mark">J</div>
+    <span class="nav-logo-name">Jiro</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#">Commands</a>
+    <a class="nav-link" href="#">Support</a>
+    <a class="nav-link" href="#">Docs</a>
+  </div>
+  <a class="nav-cta" href="#" onclick="loginWithDiscord();return false">
+    <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.001.022.015.043.032.054a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+    Login
+  </a>
+</nav>
 
-<!-- Login -->
-<div id="login-screen">
-  <div class="login-card">
-    <span class="login-bear"><i class="fas fa-snowflake"></i></span>
-    <div class="login-title">Jiro</div>
-    <div class="login-sub">Control Panel</div>
-    <div class="login-badge"><i class="fas fa-snowflake"></i> Powered by NixAI · Made by Blueey</div>
-    <button class="btn-discord" id="login-btn" type="button">
-      <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.032.052a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+<section class="hero">
+  <div class="hero-badge"><div class="hero-badge-dot"></div>Free &amp; Open Source</div>
+  <h1 class="hero-h1">The Dashboard<br>for <span class="ac">Jiro Bot</span></h1>
+  <p class="hero-sub">Manage your Discord server from anywhere. View logs, configure automod, track members, and customize every feature — all in one place.</p>
+  <div class="hero-btns">
+    <a class="btn-primary" href="#" onclick="loginWithDiscord();return false">
+      <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.001.022.015.043.032.054a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
       Login with Discord
-    </button>
+    </a>
+    <a class="btn-secondary" href="#">View Commands</a>
   </div>
-</div>
+  <p class="hero-note">Only servers where Jiro is present will appear after login.</p>
+</section>
 
-<!-- App -->
-<div id="app">
-  <div class="topbar">
-    <div class="topbar-logo"><span style="font-size:28px;color:var(--blue)"><i class="fas fa-snowflake"></i></span> Jiro</div>
-    <div class="guild-select-wrap">
-      <label>Server</label>
-      <select class="guild-select" id="guild-select"><option value="">— Pick a server —</option></select>
-    </div>
-    <div class="topbar-sep"></div>
-    <div class="topbar-user">
-      <img class="topbar-avatar" id="user-avatar" src="" alt="" />
-      <span id="user-tag">—</span>
-    </div>
-    <button class="btn-logout" id="logout-btn">Logout</button>
-  </div>
+<section class="features">
+  <div class="feat-card"><div class="feat-icon">💬</div><div class="feat-title">Full Message Logging</div><div class="feat-desc">Every deleted and purged message is captured, stored, and searchable — including bulk purges with executor tracking.</div></div>
+  <div class="feat-card"><div class="feat-icon">🛡️</div><div class="feat-title">Moderation Logs</div><div class="feat-desc">Bans, kicks, mutes, warnings, and timeouts are all recorded with moderator, target, and reason.</div></div>
+  <div class="feat-card"><div class="feat-icon">🤖</div><div class="feat-title">AutoMod Control</div><div class="feat-desc">View every spam, bad word, invite, and link trigger. See what was caught and what action was taken.</div></div>
+  <div class="feat-card"><div class="feat-icon">👥</div><div class="feat-title">Member Tracking</div><div class="feat-desc">Track every join and leave with account age warnings. Spot raid patterns before they escalate.</div></div>
+  <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-title">Live Overview</div><div class="feat-desc">At-a-glance stats for the last 7 days: messages, members, mod actions, and AutoMod triggers.</div></div>
+  <div class="feat-card"><div class="feat-icon">🚨</div><div class="feat-title">Anti-Raid Events</div><div class="feat-desc">Every raid detection, lockdown trigger, and mass-join spike is logged and visible on your dashboard.</div></div>
+</section>
 
-  <div class="statusbar">
-    <div class="status-dot"></div>
-    <span>Connected to Supabase</span>
-    <span id="guild-id-label" style="color:#7ab0d4;margin-left:4px"></span>
-    <span class="save-indicator" id="save-indicator"><i class="fas fa-check"></i> Saved!</span>
-  </div>
+<footer>
+  &copy; 2025 Jiro &bull; <a href="#">Terms</a> &bull; <a href="#">Privacy</a> &bull; <a href="#">Support Server</a>
+</footer>
 
-  <div class="main">
-    <nav class="sidebar">
-      <div class="sidebar-mascot">
-        <span class="sidebar-mascot-emoji"><i class="fas fa-snowflake"></i></span>
-        <div class="sidebar-mascot-name">Jiro</div>
-        <div class="sidebar-mascot-sub">Your cozy bot pal <i class="fas fa-snowflake" style="font-size:10px"></i></div>
-      </div>
-      <div class="sidebar-section">Settings</div>
-      <div class="nav-item active" data-section="moderation"><span class="nav-icon"><i class="fas fa-hammer"></i></span> Moderation</div>
-      <div class="nav-item" data-section="automod"><span class="nav-icon"><i class="fas fa-robot"></i></span> Auto-Mod</div>
-      <div class="nav-item" data-section="warnings"><span class="nav-icon"><i class="fas fa-exclamation-triangle"></i></span> Warnings</div>
-      <div class="nav-item" data-section="welcome"><span class="nav-icon"><i class="fas fa-hand-paper"></i></span> Welcome</div>
-      <div class="nav-item" data-section="logs"><span class="nav-icon"><i class="fas fa-clipboard-list"></i></span> Logs</div>
-      <div class="nav-item" data-section="ai"><span class="nav-icon"><i class="fas fa-brain"></i></span> AI</div>
-      <div class="nav-item" data-section="roles"><span class="nav-icon"><i class="fas fa-theater-masks"></i></span> Roles</div>
-    </nav>
-
-    <div class="content">
-      <div class="no-guild" id="no-guild-msg">
-        <div class="no-guild-bear"><i class="fas fa-snowflake"></i></div>
-        <div class="no-guild-title">Hey there! Pick a server <i class="fas fa-snowman"></i></div>
-        <div class="no-guild-sub">Select a server from the dropdown above.<br>Only servers where you're an admin will appear.</div>
-      </div>
-
-      <!-- Moderation -->
-      <div class="section active" id="section-moderation">
-        <div class="section-header"><span class="section-icon"><i class="fas fa-hammer"></i></span><div><div class="section-title">Moderation</div><div class="section-desc">Core mod settings and defaults</div></div></div>
-        <div class="card">
-          <div class="card-title">Default Mute Duration</div>
-          <div class="card-desc">Used when no duration is given with ?mute</div>
-          <div class="field"><label>Duration (e.g. 10m, 1h, 1d)</label><input type="text" id="default_mute" placeholder="10m" style="max-width:180px" /></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Shared Mod Channel</div>
-          <div class="card-desc">Channel ID where Claim / Donate / Leave Open buttons are posted</div>
-          <div class="field"><label>Channel ID</label><input type="text" id="shared_mod_channel_id" placeholder="Leave blank to disable" style="max-width:260px" /></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Channel Controls</div>
-          <div class="card-desc">Use these commands in Discord to lock/unlock channels or change nicknames</div>
-          <div class="card-row">
-            <span class="info-pill"><i class="fas fa-lock"></i> ?lock [reason]</span>
-            <span class="info-pill"><i class="fas fa-lock-open"></i> ?unlock</span>
-            <span class="info-pill"><i class="fas fa-pencil-alt"></i> ?nickname @user [name]</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Auto-Mod -->
-      <div class="section" id="section-automod">
-        <div class="section-header"><span class="section-icon"><i class="fas fa-robot"></i></span><div><div class="section-title">Auto-Mod</div><div class="section-desc">Automatic rule enforcement</div></div></div>
-        <div class="card">
-          <div class="card-title">Toggles</div>
-          <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Auto-Mod Enabled</div><div class="toggle-hint">Master switch for all auto-mod features</div></div><label class="toggle"><input type="checkbox" id="automod_enabled" /><span class="toggle-slider"></span></label></div>
-          <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Block Discord Invites</div><div class="toggle-hint">Delete messages containing discord.gg links</div></div><label class="toggle"><input type="checkbox" id="block_invites" /><span class="toggle-slider"></span></label></div>
-          <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Block External Links</div><div class="toggle-hint">Delete messages containing any http:// URLs</div></div><label class="toggle"><input type="checkbox" id="block_links" /><span class="toggle-slider"></span></label></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Spam Detection</div>
-          <div class="card-desc">Mute members who send too many messages too quickly</div>
-          <div class="card-grid" style="margin-top:8px">
-            <div class="field"><label>Message Limit</label><div class="range-wrap"><input type="range" id="spam_limit" min="2" max="20" value="5" oninput="document.getElementById('spam_limit_val').textContent=this.value" /><span class="range-val" id="spam_limit_val">5</span></div></div>
-            <div class="field"><label>Window (seconds)</label><div class="range-wrap"><input type="range" id="spam_window" min="2" max="30" value="5" oninput="document.getElementById('spam_window_val').textContent=this.value" /><span class="range-val" id="spam_window_val">5</span></div></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="fas fa-ban"></i> Banned Words</div>
-          <div class="card-desc">Messages with these words get deleted and the sender gets muted</div>
-          <div class="tag-list" id="bad-words-list"></div>
-          <div class="tag-input-row">
-            <input type="text" id="bad-word-input" placeholder="Type a word and press Add…" />
-            <button class="btn btn-primary btn-sm" onclick="addBadWord()">Add</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Warnings -->
-      <div class="section" id="section-warnings">
-        <div class="section-header"><span class="section-icon"><i class="fas fa-exclamation-triangle"></i></span><div><div class="section-title">Warnings</div><div class="section-desc">Auto-escalation thresholds</div></div></div>
-        <div class="card">
-          <div class="card-title">Escalation Thresholds</div>
-          <div class="card-desc">At how many warnings should Jiro automatically escalate punishment?</div>
-          <div class="card-grid" style="margin-top:12px">
-            <div class="field"><label>Auto-Mute at (warnings)</label><input type="number" id="warn_mute_at" min="1" max="50" value="3" /></div>
-            <div class="field"><label>Mute Duration (hours)</label><input type="number" id="warn_mute_hours" min="0.1" max="720" step="0.5" value="1" /></div>
-            <div class="field"><label>Auto-Kick at (warnings)</label><input type="number" id="warn_kick_at" min="1" max="50" value="5" /></div>
-            <div class="field"><label>Auto-Ban at (warnings)</label><input type="number" id="warn_ban_at" min="1" max="50" value="7" /></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Welcome -->
-      <div class="section" id="section-welcome">
-        <div class="section-header"><span class="section-icon"><i class="fas fa-hand-paper"></i></span><div><div class="section-title">Welcome</div><div class="section-desc">Greet new members automatically</div></div></div>
-        <div class="card">
-          <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Welcome Messages Enabled</div><div class="toggle-hint">Send a message when someone new joins</div></div><label class="toggle"><input type="checkbox" id="welcome_enabled" /><span class="toggle-slider"></span></label></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Welcome Channel ID</div>
-          <div class="card-desc">The channel where welcome messages are posted</div>
-          <div class="field"><label>Channel ID</label><input type="text" id="welcome_channel_id" placeholder="Paste channel ID…" style="max-width:260px" /></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Welcome Message</div>
-          <div class="card-desc">Placeholders: <span class="info-pill" style="font-size:11px">{user}</span> <span class="info-pill" style="font-size:11px">{username}</span> <span class="info-pill" style="font-size:11px">{server}</span> <span class="info-pill" style="font-size:11px">{count}</span></div>
-          <div class="field" style="margin-top:10px"><textarea id="welcome_message" rows="3" placeholder="Welcome to **{server}**, {user}! You are member **#{count}**." oninput="updateWelcomePreview()"></textarea></div>
-          <div class="preview-label">Preview</div>
-          <div class="welcome-preview" id="welcome-preview">—</div>
-        </div>
-        <div class="card">
-          <div class="card-title">Auto-Role on Join</div>
-          <div class="card-desc">Role ID to automatically assign when someone joins</div>
-          <div class="field"><label>Role ID</label><input type="text" id="autorole_id" placeholder="Leave blank to disable" style="max-width:260px" /></div>
-        </div>
-      </div>
-
-      <!-- Logs -->
-      <div class="section" id="section-logs">
-        <div class="section-header"><span class="section-icon"><i class="fas fa-clipboard-list"></i></span><div><div class="section-title">Logs</div><div class="section-desc">Moderation and event logging</div></div></div>
-        <div class="card">
-          <div class="card-title">Log Channel ID</div>
-          <div class="card-desc">All mod actions, message edits/deletes, joins, leaves, role changes and nickname changes will be logged here</div>
-          <div class="field"><label>Channel ID</label><input type="text" id="log_channel_id" placeholder="Paste channel ID…" style="max-width:260px" /></div>
-        </div>
-      </div>
-
-      <!-- AI -->
-      <div class="section" id="section-ai">
-        <div class="section-header"><span class="section-icon"><i class="fas fa-brain"></i></span><div><div class="section-title">AI</div><div class="section-desc">Groq-powered AI configuration</div></div></div>
-        <div class="card">
-          <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">AI Features Enabled</div><div class="toggle-hint">Allows ?ask, ?roast, ?explain, @mentions and more</div></div><label class="toggle"><input type="checkbox" id="ai_enabled" /><span class="toggle-slider"></span></label></div>
-        </div>
-        <div class="card">
-          <div class="card-title">AI Model</div>
-          <div class="card-desc">Which Groq model to use for this server</div>
-          <div class="field"><label>Model</label>
-            <select id="ai_model" style="max-width:340px">
-              <option value="llama-3.1-8b-instant">llama-3.1-8b-instant (fast)</option>
-              <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile (smart)</option>
-              <option value="llama-3.1-70b-versatile">llama-3.1-70b-versatile</option>
-              <option value="mixtral-8x7b-32768">mixtral-8x7b-32768</option>
-              <option value="gemma2-9b-it">gemma2-9b-it</option>
-            </select>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title">Custom System Prompt</div>
-          <div class="card-desc">Override Jiro's personality for this server. Leave blank to use the default.</div>
-          <div class="field"><textarea id="ai_custom_prompt" rows="5" placeholder="You are Jiro, a friendly polar bear Discord bot for this server…"></textarea></div>
-        </div>
-      </div>
-
-      <!-- Roles -->
-      <div class="section" id="section-roles">
-        <div class="section-header"><span class="section-icon"><i class="fas fa-theater-masks"></i></span><div><div class="section-title">Roles</div><div class="section-desc">Self-assignable role management</div></div></div>
-        <div class="card">
-          <div class="card-title">Self-Assignable Role IDs</div>
-          <div class="card-desc">Members can assign these roles themselves using <span class="info-pill" style="font-size:11px">?iam &lt;role&gt;</span></div>
-          <div class="tag-list" id="self-roles-list"></div>
-          <div class="tag-input-row">
-            <input type="text" id="self-role-input" placeholder="Add a role ID…" />
-            <button class="btn btn-primary btn-sm" onclick="addSelfRole()">Add</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="save-bar" id="save-bar">
-    <span class="save-bar-msg"><span style="font-size:16px;color:var(--blue)"><i class="fas fa-snowflake"></i></span> You have unsaved changes</span>
-    <div style="display:flex;gap:10px">
-      <button class="btn btn-danger btn-sm" id="discard-btn">Discard</button>
-      <button class="btn btn-primary" id="save-btn"><i class="fas fa-save"></i> Save Changes</button>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ── CONFIG ────────────────────────────────────────────
-const SUPABASE_URL      = 'https://hfxagwcwaalrmaqzhyfj.supabase.co';
-const SUPABASE_ANON     = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhmeGFnd2N3YWFscm1hcXpoeWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MzY5NzIsImV4cCI6MjA5MDIxMjk3Mn0.LMFfFRmqW34PT70zAOTj4zsUWmrDl_P4MXL0wZBkxYc';
-const DISCORD_CLIENT_ID = '1487252546060947476';
-const EDGE_TOKEN_URL    = 'https://hfxagwcwaalrmaqzhyfj.supabase.co/functions/v1/discord-oauth';
-const REDIRECT_URI = window.location.origin + window.location.pathname;
+// ── CONFIG ── Replace these before deploying ──────────────────
+const CONFIG = {
+  DISCORD_CLIENT_ID:  "YOUR_CLIENT_ID_HERE",
+  REDIRECT_URI:       window.location.origin + "/callback.html",
+  SCOPES:             "identify guilds",
+};
 
-// ── Snowflakes ────────────────────────────────────────
+function loginWithDiscord() {
+  // Build Discord OAuth URL
+  const params = new URLSearchParams({
+    client_id:     CONFIG.DISCORD_CLIENT_ID,
+    redirect_uri:  CONFIG.REDIRECT_URI,
+    response_type: "code",
+    scope:         CONFIG.SCOPES,
+    prompt:        "none",  // skip consent if already authorized
+  });
+  window.location.href = "https://discord.com/api/oauth2/authorize?" + params.toString();
+}
+
+// If already logged in, redirect straight to servers page
 (function(){
-  const c = document.getElementById('snowflakes');
-  [1,2,3].forEach(() => {
-    for(let i=0;i<4;i++){
-      const el = document.createElement('div');
-      el.className = 'snowflake';
-      el.innerHTML = '<i class="fas fa-snowflake"></i>';
-      el.style.cssText = `left:${Math.random()*100}%;font-size:${8+Math.random()*14}px;opacity:${.3+Math.random()*.5};animation-duration:${6+Math.random()*12}s;animation-delay:${-Math.random()*12}s;`;
-      c.appendChild(el);
-    }
-  });
-})();
-
-// ── Init ──────────────────────────────────────────────
-let supabase;
-try { supabase = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON); } catch(e) { console.error('Supabase init failed', e); }
-let currentGuildId=null, config={}, badWords=[], selfRoles=[], dirty=false;
-
-// ── Auth ──────────────────────────────────────────────
-function makeState(){
-  try { return crypto.randomUUID(); } catch(_){}
-  // Fallback for non-HTTPS / older browsers
-  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>
-    (c^(Math.random()*16>>c/4)).toString(16));
-}
-function getOAuthURL(){
-  const state = makeState();
-  sessionStorage.setItem('oauth_state', state);
-  return 'https://discord.com/oauth2/authorize?'+new URLSearchParams({
-    client_id: DISCORD_CLIENT_ID,
-    redirect_uri: REDIRECT_URI,
-    response_type: 'code',
-    scope: 'identify guilds',
-    state
-  });
-}
-
-async function handleCallback(code, state){
-  if(state && sessionStorage.getItem('oauth_state')!==state){ showToast('State mismatch.',true); return showLogin(); }
-  sessionStorage.removeItem('oauth_state');
-  try{
-    const r = await fetch(EDGE_TOKEN_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code,redirect_uri:REDIRECT_URI})});
-    if(!r.ok) throw new Error(await r.text());
-    const {access_token} = await r.json();
-    sessionStorage.setItem('discord_token', access_token);
-    window.history.replaceState({}, '', window.location.pathname);
-    await loadUser(access_token);
-  }catch(e){ showToast('Login failed: '+e.message,true); showLogin(); }
-}
-
-async function loadUser(token){
-  try {
-    const [mR,gR] = await Promise.all([
-      fetch('https://discord.com/api/users/@me',{headers:{Authorization:`Bearer ${token}`}}),
-      fetch('https://discord.com/api/users/@me/guilds',{headers:{Authorization:`Bearer ${token}`}})
-    ]);
-    if(!mR.ok||!gR.ok){ showToast('Failed to fetch Discord data.',true); return showLogin(); }
-    const me=await mR.json(), guilds=await gR.json();
-    document.getElementById('user-tag').textContent = me.username;
-    document.getElementById('user-avatar').src = me.avatar
-      ? `https://cdn.discordapp.com/avatars/${me.id}/${me.avatar}.png?size=64`
-      : `https://cdn.discordapp.com/embed/avatars/${(me.discriminator||0)%5}.png`;
-    const adminGuilds = guilds.filter(g=>(BigInt(g.permissions)&BigInt(0x8))!==BigInt(0));
-    const sel = document.getElementById('guild-select');
-    sel.innerHTML = '<option value="">— Pick a server —</option>';
-    adminGuilds.forEach(g=>{ const o=document.createElement('option'); o.value=g.id; o.textContent=g.name; sel.appendChild(o); });
-    showApp();
-  } catch(e) { showToast('Connection error: '+e.message, true); showLogin(); }
-}
-
-// ── Config ────────────────────────────────────────────
-async function loadConfig(guildId){
-  try{
-    const {data} = await supabase.from('guild_configs').select('config').eq('guild_id',guildId);
-    config    = (data&&data[0]?.config) ? data[0].config : {};
-    badWords  = Array.isArray(config.bad_words)  ? [...config.bad_words]  : [];
-    selfRoles = Array.isArray(config.self_roles) ? [...config.self_roles] : [];
-    populateForm();
-    document.getElementById('guild-id-label').textContent = `· ${guildId}`;
-    document.getElementById('no-guild-msg').style.display = 'none';
-    dirty=false; updateSaveBar();
-  }catch(e){ showToast('Failed to load config.',true); }
-}
-
-async function saveConfig(){
-  if(!currentGuildId) return;
-  collectForm();
-  const nc = {...config, bad_words:badWords, self_roles:selfRoles};
-  try{
-    const {error} = await supabase.from('guild_configs').upsert({guild_id:currentGuildId,config:nc,updated_at:new Date().toISOString()},{onConflict:'guild_id'});
-    if(error) throw error;
-    config=nc; dirty=false; updateSaveBar(); showToast('Config saved!');
-    const si=document.getElementById('save-indicator'); si.classList.add('visible'); setTimeout(()=>si.classList.remove('visible'),3000);
-  }catch(e){ showToast('Save failed: '+e.message,true); }
-}
-
-function collectForm(){
-  config.default_mute          = v('default_mute')||'10m';
-  config.shared_mod_channel_id = v('shared_mod_channel_id')||null;
-  config.automod_enabled       = chk('automod_enabled');
-  config.block_invites         = chk('block_invites');
-  config.block_links           = chk('block_links');
-  config.spam_limit            = parseInt(v('spam_limit'))||5;
-  config.spam_window           = parseInt(v('spam_window'))||5;
-  config.warn_mute_at          = parseInt(v('warn_mute_at'))||3;
-  config.warn_mute_hours       = parseFloat(v('warn_mute_hours'))||1;
-  config.warn_kick_at          = parseInt(v('warn_kick_at'))||5;
-  config.warn_ban_at           = parseInt(v('warn_ban_at'))||7;
-  config.welcome_enabled       = chk('welcome_enabled');
-  config.welcome_channel_id    = v('welcome_channel_id')||null;
-  config.welcome_message       = v('welcome_message')||null;
-  config.autorole_id           = v('autorole_id')||null;
-  config.log_channel_id        = v('log_channel_id')||null;
-  config.ai_enabled            = chk('ai_enabled');
-  config.ai_model              = v('ai_model')||'llama-3.1-8b-instant';
-  config.ai_custom_prompt      = v('ai_custom_prompt')||null;
-}
-
-function populateForm(){
-  set('default_mute',config.default_mute||'10m');
-  set('shared_mod_channel_id',config.shared_mod_channel_id||'');
-  setChk('automod_enabled',bool(config.automod_enabled,true));
-  setChk('block_invites',bool(config.block_invites,true));
-  setChk('block_links',bool(config.block_links,false));
-  setRange('spam_limit',config.spam_limit||5,'spam_limit_val');
-  setRange('spam_window',config.spam_window||5,'spam_window_val');
-  set('warn_mute_at',config.warn_mute_at||3);
-  set('warn_mute_hours',config.warn_mute_hours||1);
-  set('warn_kick_at',config.warn_kick_at||5);
-  set('warn_ban_at',config.warn_ban_at||7);
-  setChk('welcome_enabled',bool(config.welcome_enabled,true));
-  set('welcome_channel_id',config.welcome_channel_id||'');
-  set('welcome_message',config.welcome_message||'');
-  set('autorole_id',config.autorole_id||'');
-  set('log_channel_id',config.log_channel_id||'');
-  setChk('ai_enabled',bool(config.ai_enabled,true));
-  set('ai_model',config.ai_model||'llama-3.1-8b-instant');
-  set('ai_custom_prompt',config.ai_custom_prompt||'');
-  renderBadWords(); renderSelfRoles(); updateWelcomePreview();
-}
-
-// ── Bad words ─────────────────────────────────────────
-function renderBadWords(){ document.getElementById('bad-words-list').innerHTML=badWords.map((w,i)=>`<span class="tag">${w}<button class="tag-remove" onclick="removeBadWord(${i})"><i class=\"fas fa-times\"></i></button></span>`).join(''); }
-function addBadWord(){ const inp=document.getElementById('bad-word-input'),w=inp.value.trim().toLowerCase(); if(!w||badWords.includes(w))return; badWords.push(w);inp.value='';renderBadWords();markDirty(); }
-function removeBadWord(i){ badWords.splice(i,1);renderBadWords();markDirty(); }
-document.getElementById('bad-word-input').addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();addBadWord();} });
-
-// ── Self roles ────────────────────────────────────────
-function renderSelfRoles(){ document.getElementById('self-roles-list').innerHTML=selfRoles.map((r,i)=>`<span class="tag">${r}<button class="tag-remove" onclick="removeSelfRole(${i})"><i class=\"fas fa-times\"></i></button></span>`).join(''); }
-function addSelfRole(){ const inp=document.getElementById('self-role-input'),r=inp.value.trim(); if(!r||selfRoles.includes(r))return; selfRoles.push(r);inp.value='';renderSelfRoles();markDirty(); }
-function removeSelfRole(i){ selfRoles.splice(i,1);renderSelfRoles();markDirty(); }
-document.getElementById('self-role-input').addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();addSelfRole();} });
-
-// ── Welcome preview ───────────────────────────────────
-function updateWelcomePreview(){
-  document.getElementById('welcome-preview').textContent =
-    (v('welcome_message')||'Welcome to **{server}**, {user}! You are member **#{count}**.')
-    .replace(/{user}/g,'@NewMember').replace(/{username}/g,'NewMember')
-    .replace(/{server}/g,'Your Server').replace(/{count}/g,'42');
-}
-
-// ── Helpers ───────────────────────────────────────────
-const v        = id=>document.getElementById(id)?.value??'';
-const chk      = id=>document.getElementById(id)?.checked??false;
-const set      = (id,val)=>{ const el=document.getElementById(id); if(el)el.value=val; };
-const setChk   = (id,val)=>{ const el=document.getElementById(id); if(el)el.checked=val; };
-const setRange = (id,val,lbl)=>{ const el=document.getElementById(id); if(el){el.value=val;document.getElementById(lbl).textContent=val;} };
-const bool     = (v,def)=>{ if(typeof v==='boolean')return v; if(typeof v==='string')return v.toLowerCase()==='true'; return def; };
-function markDirty(){ dirty=true; updateSaveBar(); }
-function updateSaveBar(){ document.getElementById('save-bar').classList.toggle('visible',dirty); }
-
-document.querySelectorAll('input:not(#bad-word-input):not(#self-role-input),textarea,select:not(.guild-select)').forEach(el=>{
-  el.addEventListener('change',markDirty); el.addEventListener('input',markDirty);
-});
-
-// ── UI ────────────────────────────────────────────────
-function showLogin(){ document.getElementById('login-screen').style.display='flex'; document.getElementById('app').style.display='none'; }
-function showApp(){ document.getElementById('login-screen').style.display='none'; document.getElementById('app').style.display='block'; }
-function showToast(msg,isError=false){ const t=document.getElementById('toast'); t.innerHTML=(isError?'<i class="fas fa-times-circle"></i> ':'<i class="fas fa-check-circle"></i> ')+msg; t.className=(isError?'error':'')+' show'; setTimeout(()=>t.className=isError?'error':'',3500); }
-
-// ── Nav ───────────────────────────────────────────────
-document.querySelectorAll('.nav-item').forEach(item=>{
-  item.addEventListener('click',()=>{
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-    item.classList.add('active');
-    document.getElementById(`section-${item.dataset.section}`)?.classList.add('active');
-  });
-});
-
-document.getElementById('guild-select').addEventListener('change',async e=>{
-  const id=e.target.value;
-  if(!id){ currentGuildId=null; document.getElementById('no-guild-msg').style.display='flex'; return; }
-  currentGuildId=id; await loadConfig(id);
-});
-
-document.getElementById('save-btn').addEventListener('click',saveConfig);
-document.getElementById('discard-btn').addEventListener('click',()=>{ if(currentGuildId)loadConfig(currentGuildId); });
-document.getElementById('logout-btn').addEventListener('click',()=>{ sessionStorage.removeItem('discord_token'); showLogin(); });
-document.getElementById('login-btn').addEventListener('click', e => {
-  e.preventDefault();
-  try {
-    const url = getOAuthURL();
-    console.log('[Jiro] Redirecting to:', url);
-    window.location.href = url;
-  } catch(err) {
-    console.error('[Jiro] Login error:', err);
-    showToast('Login error: ' + err.message, true);
+  const session = sessionStorage.getItem("jiro_session");
+  if (session) {
+    try {
+      const s = JSON.parse(session);
+      if (s.access_token && s.user) {
+        window.location.href = "servers.html";
+      }
+    } catch(e) { sessionStorage.removeItem("jiro_session"); }
   }
-});
-
-// ── Bootstrap ─────────────────────────────────────────
-(async()=>{
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const code   = params.get('code');
-    const state  = params.get('state');
-    if(code){ await handleCallback(code, state); return; }
-    const token = sessionStorage.getItem('discord_token');
-    if(token){ await loadUser(token); return; }
-    showLogin();
-  } catch(e) { console.error('[Jiro] Bootstrap error:', e); showLogin(); }
 })();
 </script>
 </body>
