@@ -993,14 +993,13 @@ input[type=range]::-webkit-slider-thumb {
 <div id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-//  CONFIG  —  fill in your values
-// ═══════════════════════════════════════════════
+// ── Add your anon key to CONFIG ──────────────────────────────────────────────
 const CONFIG = {
-  CLIENT_ID:   '1487252546060947476',
-  REDIRECT_URI: window.location.origin + window.location.pathname,
-  SCOPES:      'identify',
-  API_BASE:    'https://hfxagwcwaalrmaqzhyfj.supabase.co',
+  CLIENT_ID:    '1487252546060947476',
+  REDIRECT_URI:  window.location.origin + window.location.pathname,
+  SCOPES:       'identify',
+  API_BASE:     'https://hfxagwcwaalrmaqzhyfj.supabase.co',
+  ANON_KEY:     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhmeGFnd2N3YWFscm1hcXpoeWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MzY5NzIsImV4cCI6MjA5MDIxMjk3Mn0.LMFfFRmqW34PT70zAOTj4zsUWmrDl_P4MXL0wZBkxYc',   // ← add this
 };
 
 // ═══════════════════════════════════════════════
@@ -1126,12 +1125,17 @@ function showApp() {
 // ═══════════════════════════════════════════════
 //  API HELPERS
 // ═══════════════════════════════════════════════
-async function discordApi(path) {
-  const res = await fetch(`https://discord.com/api/v10${path}`, {
-    headers: { 'Authorization': `Bearer ${state.token}` },
+async function supabaseApi(path, opts = {}) {
+  const res = await fetch(`${CONFIG.API_BASE}${path}`, {
+    ...opts,
+    headers: {
+      'Authorization': `Bearer ${CONFIG.ANON_KEY}`,  // ← Supabase anon key, not Discord token
+      'Content-Type':  'application/json',
+      ...(opts.headers || {}),
+    },
+    body: opts.body ? JSON.stringify(opts.body) : undefined,
   });
-  if (res.status === 401) { logout(); throw new Error('Unauthorized'); }
-  if (!res.ok) throw new Error(`Discord API ${res.status}`);
+  if (!res.ok) throw new Error(`API ${res.status}`);
   return res.json();
 }
 
