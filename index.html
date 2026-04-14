@@ -7,435 +7,440 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --bg:      #0a0b10;
-    --surface: #111318;
-    --card:    #16181f;
-    --border:  #252830;
-    --accent:  #5865F2;
-    --accent2: #00BFFF;
-    --success: #00C853;
-    --warn:    #FFAA00;
-    --error:   #FF4444;
-    --text:    #e8eaf0;
-    --muted:   #6b7280;
-    --font:    'Syne', sans-serif;
-    --mono:    'DM Mono', monospace;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+:root {
+  --bg:      #0a0b10;
+  --surface: #111318;
+  --card:    #16181f;
+  --border:  #252830;
+  --accent:  #5865F2;
+  --accent2: #00BFFF;
+  --success: #00C853;
+  --warn:    #FFAA00;
+  --error:   #FF4444;
+  --text:    #e8eaf0;
+  --muted:   #6b7280;
+  --font:    'Syne', sans-serif;
+  --mono:    'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--font); min-height: 100vh; overflow-x: hidden;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 10% 0%,  rgba(88,101,242,.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 50% at 90% 80%,  rgba(0,191,255,.07)  0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
 
-  /* ── BACKGROUND ── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background:
-      radial-gradient(ellipse 60% 40% at 10% 0%, rgba(88,101,242,.12) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 50% at 90% 80%, rgba(0,191,255,.07) 0%, transparent 70%);
-    pointer-events: none; z-index: 0;
-  }
+/* ── SIDEBAR ── */
+.sidebar {
+  position: fixed; top: 0; left: 0; height: 100vh; width: 240px;
+  background: var(--surface); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; z-index: 100; transition: transform .3s;
+}
+.sidebar-logo { padding: 24px 20px 16px; border-bottom: 1px solid var(--border); }
+.sidebar-logo h1 {
+  font-size: 22px; font-weight: 800; letter-spacing: -.5px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.sidebar-logo p { font-size: 11px; color: var(--muted); margin-top: 2px; letter-spacing: .5px; }
 
-  /* ── SIDEBAR ── */
-  .sidebar {
-    position: fixed; top: 0; left: 0; height: 100vh;
-    width: 240px; background: var(--surface);
-    border-right: 1px solid var(--border);
-    display: flex; flex-direction: column;
-    z-index: 100; transition: transform .3s;
-  }
-  .sidebar-logo {
-    padding: 24px 20px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-  .sidebar-logo h1 {
-    font-size: 22px; font-weight: 800; letter-spacing: -.5px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .sidebar-logo p { font-size: 11px; color: var(--muted); margin-top: 2px; letter-spacing: .5px; }
+.guild-select {
+  margin: 12px 12px 0; background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 12px; cursor: pointer;
+  display: flex; align-items: center; gap: 10px; transition: border-color .2s;
+}
+.guild-select:hover { border-color: var(--accent); }
+.guild-icon {
+  width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; overflow: hidden;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+}
+.guild-icon img { width: 100%; height: 100%; object-fit: cover; }
+.guild-name { font-size: 13px; font-weight: 600; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.guild-arrow { color: var(--muted); display: flex; align-items: center; }
 
-  .guild-select {
-    margin: 12px 12px 0;
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 10px; padding: 10px 12px;
-    cursor: pointer; display: flex; align-items: center; gap: 10px;
-    transition: border-color .2s;
-  }
-  .guild-select:hover { border-color: var(--accent); }
-  .guild-icon {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 700; flex-shrink: 0;
-  }
-  .guild-name { font-size: 13px; font-weight: 600; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .guild-arrow { color: var(--muted); font-size: 10px; }
+.nav { flex: 1; overflow-y: auto; padding: 12px 8px; }
+.nav-section { margin-bottom: 16px; }
+.nav-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 1px;
+  color: var(--muted); padding: 4px 12px 8px; text-transform: uppercase;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: 8px;
+  cursor: pointer; font-size: 13px; font-weight: 600;
+  color: var(--muted); transition: all .15s; border: 1px solid transparent;
+}
+.nav-item:hover { color: var(--text); background: var(--card); }
+.nav-item.active { color: var(--text); background: rgba(88,101,242,.15); border-color: rgba(88,101,242,.3); }
+.nav-item .nav-ic { width: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; background: var(--accent);
+  font-size: 10px; padding: 2px 6px; border-radius: 20px; color: #fff;
+}
 
-  .nav { flex: 1; overflow-y: auto; padding: 12px 8px; }
-  .nav-section { margin-bottom: 16px; }
-  .nav-label {
-    font-size: 10px; font-weight: 600; letter-spacing: 1px;
-    color: var(--muted); padding: 4px 12px 8px; text-transform: uppercase;
-  }
-  .nav-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 9px 12px; border-radius: 8px;
-    cursor: pointer; font-size: 13px; font-weight: 600;
-    color: var(--muted); transition: all .15s;
-    border: 1px solid transparent;
-  }
-  .nav-item:hover { color: var(--text); background: var(--card); }
-  .nav-item.active {
-    color: var(--text); background: rgba(88,101,242,.15);
-    border-color: rgba(88,101,242,.3);
-  }
-  .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
-  .nav-badge {
-    margin-left: auto; background: var(--accent);
-    font-size: 10px; padding: 2px 6px; border-radius: 20px; color: #fff;
-  }
+.sidebar-footer { padding: 12px; border-top: 1px solid var(--border); }
+.user-tag {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--card); border-radius: 10px; padding: 10px 12px;
+}
+.user-avatar {
+  width: 32px; height: 32px; border-radius: 50%; background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0; overflow: hidden;
+}
+.user-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.user-info { flex: 1; }
+.user-info .name { font-size: 13px; font-weight: 600; }
+.user-info .disc { font-size: 11px; color: var(--muted); }
+.logout-btn {
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  display: flex; align-items: center; padding: 4px; border-radius: 6px; transition: color .15s;
+}
+.logout-btn:hover { color: var(--error); }
 
-  .sidebar-footer {
-    padding: 12px; border-top: 1px solid var(--border);
-  }
-  .user-tag {
-    display: flex; align-items: center; gap: 10px;
-    background: var(--card); border-radius: 10px; padding: 10px 12px;
-  }
-  .user-avatar {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: var(--accent); display: flex; align-items: center;
-    justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0;
-  }
-  .user-info { flex: 1; }
-  .user-info .name { font-size: 13px; font-weight: 600; }
-  .user-info .disc { font-size: 11px; color: var(--muted); }
-  .logout-btn {
-    background: none; border: none; color: var(--error);
-    cursor: pointer; font-size: 16px; padding: 4px;
-  }
+/* ── MAIN CONTENT ── */
+.main { margin-left: 240px; min-height: 100vh; padding: 32px; position: relative; z-index: 1; }
+.page { display: none; animation: fadeUp .3s ease both; }
+.page.active { display: block; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
 
-  /* ── MAIN CONTENT ── */
-  .main { margin-left: 240px; min-height: 100vh; padding: 32px; position: relative; z-index: 1; }
-  .page { display: none; animation: fadeUp .3s ease both; }
-  .page.active { display: block; }
-  @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+/* ── PAGE HEADER ── */
+.page-header { margin-bottom: 28px; }
+.page-header h2 { font-size: 26px; font-weight: 800; letter-spacing: -.5px; display: flex; align-items: center; gap: 10px; }
+.page-header h2 svg { opacity: .7; }
+.page-header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
 
-  /* ── PAGE HEADER ── */
-  .page-header { margin-bottom: 28px; }
-  .page-header h2 { font-size: 26px; font-weight: 800; letter-spacing: -.5px; }
-  .page-header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+/* ── STAT CARDS ── */
+.stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
+.stat-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 20px; display: flex; align-items: flex-start; gap: 14px;
+  position: relative; overflow: hidden;
+}
+.stat-card::after {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 3px; height: 100%; background: var(--accent-c, var(--accent));
+  border-radius: 14px 0 0 14px;
+}
+.stat-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(88,101,242,.15); display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0; color: var(--accent);
+}
+.stat-info .label { font-size: 11px; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; }
+.stat-info .value { font-size: 26px; font-weight: 800; line-height: 1.1; margin-top: 2px; }
+.stat-info .delta { font-size: 11px; color: var(--success); margin-top: 2px; }
 
-  /* ── STAT CARDS ── */
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-  .stat-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 14px; padding: 20px;
-    display: flex; align-items: flex-start; gap: 14px;
-    position: relative; overflow: hidden;
-  }
-  .stat-card::after {
-    content: ''; position: absolute; top: 0; left: 0;
-    width: 3px; height: 100%; background: var(--accent-c, var(--accent));
-    border-radius: 14px 0 0 14px;
-  }
-  .stat-icon {
-    width: 44px; height: 44px; border-radius: 12px;
-    background: rgba(88,101,242,.15); display: flex; align-items: center;
-    justify-content: center; font-size: 20px; flex-shrink: 0;
-  }
-  .stat-info .label { font-size: 11px; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; }
-  .stat-info .value { font-size: 26px; font-weight: 800; line-height: 1.1; margin-top: 2px; }
-  .stat-info .delta { font-size: 11px; color: var(--success); margin-top: 2px; }
+/* ── SETTINGS CARD ── */
+.settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.settings-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.settings-card.full { grid-column: 1/-1; }
+.card-header {
+  padding: 18px 20px 14px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.card-header-icon {
+  width: 34px; height: 34px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.card-header h3 { font-size: 15px; font-weight: 700; flex: 1; }
+.card-header .save-btn { margin-left: auto; }
+.card-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 16px; }
 
-  /* ── SETTINGS CARD ── */
-  .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .settings-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 16px; overflow: hidden;
-  }
-  .settings-card.full { grid-column: 1 / -1; }
-  .card-header {
-    padding: 18px 20px 14px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 10px;
-  }
-  .card-header-icon {
-    width: 34px; height: 34px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center; font-size: 16px;
-  }
-  .card-header h3 { font-size: 15px; font-weight: 700; flex: 1; }
-  .card-header .save-btn { margin-left: auto; }
-  .card-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 16px; }
+/* ── FORM ELEMENTS ── */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .3px; }
+.field input, .field select, .field textarea {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 12px; color: var(--text);
+  font-family: var(--font); font-size: 13px;
+  transition: border-color .2s, box-shadow .2s; outline: none; width: 100%;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 3px rgba(88,101,242,.15);
+}
+.field textarea { resize: vertical; min-height: 72px; }
+.field select option { background: var(--surface); }
+.field-hint { font-size: 11px; color: var(--muted); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-  /* ── FORM ELEMENTS ── */
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  .field label { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .3px; }
-  .field input, .field select, .field textarea {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 8px; padding: 10px 12px;
-    color: var(--text); font-family: var(--font); font-size: 13px;
-    transition: border-color .2s, box-shadow .2s; outline: none; width: 100%;
-  }
-  .field input:focus, .field select:focus, .field textarea:focus {
-    border-color: var(--accent); box-shadow: 0 0 0 3px rgba(88,101,242,.15);
-  }
-  .field textarea { resize: vertical; min-height: 72px; }
-  .field select option { background: var(--surface); }
-  .field-hint { font-size: 11px; color: var(--muted); }
+/* ── TOGGLE ── */
+.toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
+.toggle-info .t-label { font-size: 13px; font-weight: 600; }
+.toggle-info .t-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.toggle {
+  width: 42px; height: 24px; background: var(--border);
+  border-radius: 12px; cursor: pointer; position: relative;
+  transition: background .2s; flex-shrink: 0; border: none; outline: none;
+}
+.toggle.on { background: var(--accent); }
+.toggle::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #fff; transition: transform .2s; box-shadow: 0 1px 4px rgba(0,0,0,.3);
+}
+.toggle.on::after { transform: translateX(18px); }
 
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+/* ── BUTTONS ── */
+.btn {
+  padding: 9px 18px; border-radius: 8px; font-family: var(--font);
+  font-size: 13px; font-weight: 600; cursor: pointer; border: none;
+  transition: all .15s; display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #4752c4; }
+.btn-success { background: var(--success); color: #fff; }
+.btn-danger { background: var(--error); color: #fff; }
+.btn-danger:hover { background: #cc3333; }
+.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--text); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
 
-  /* ── TOGGLE ── */
-  .toggle-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 0; border-bottom: 1px solid var(--border);
-  }
-  .toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
-  .toggle-info .t-label { font-size: 13px; font-weight: 600; }
-  .toggle-info .t-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .toggle {
-    width: 42px; height: 24px; background: var(--border);
-    border-radius: 12px; cursor: pointer; position: relative;
-    transition: background .2s; flex-shrink: 0;
-    border: none; outline: none;
-  }
-  .toggle.on { background: var(--accent); }
-  .toggle::after {
-    content: ''; position: absolute; top: 3px; left: 3px;
-    width: 18px; height: 18px; border-radius: 50%;
-    background: #fff; transition: transform .2s; box-shadow: 0 1px 4px rgba(0,0,0,.3);
-  }
-  .toggle.on::after { transform: translateX(18px); }
+/* ── BADGE / TAG ── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 600;
+}
+.badge-green  { background: rgba(0,200,83,.15);  color: var(--success); }
+.badge-red    { background: rgba(255,68,68,.15);  color: var(--error);   }
+.badge-blue   { background: rgba(88,101,242,.15); color: var(--accent);  }
+.badge-yellow { background: rgba(255,170,0,.15);  color: var(--warn);    }
 
-  /* ── BUTTONS ── */
-  .btn {
-    padding: 9px 18px; border-radius: 8px; font-family: var(--font);
-    font-size: 13px; font-weight: 600; cursor: pointer; border: none;
-    transition: all .15s; display: inline-flex; align-items: center; gap: 6px;
-  }
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-primary:hover { background: #4752c4; }
-  .btn-success { background: var(--success); color: #fff; }
-  .btn-danger { background: var(--error); color: #fff; }
-  .btn-danger:hover { background: #cc3333; }
-  .btn-ghost {
-    background: transparent; border: 1px solid var(--border); color: var(--muted);
-  }
-  .btn-ghost:hover { border-color: var(--accent); color: var(--text); }
-  .btn-sm { padding: 6px 12px; font-size: 12px; }
+/* ── BAD WORDS TAGS ── */
+.tag-list { display: flex; flex-wrap: wrap; gap: 6px; min-height: 36px; }
+.tag {
+  background: rgba(255,68,68,.1); border: 1px solid rgba(255,68,68,.2);
+  border-radius: 6px; padding: 4px 8px; font-size: 12px; font-family: var(--mono);
+  display: flex; align-items: center; gap: 5px; color: var(--error);
+}
+.tag-remove { background: none; border: none; color: inherit; cursor: pointer; font-size: 14px; padding: 0; line-height: 1; }
+.tag-input-row { display: flex; gap: 8px; }
 
-  /* ── BADGE / TAG ── */
-  .badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 600;
-  }
-  .badge-green { background: rgba(0,200,83,.15); color: var(--success); }
-  .badge-red   { background: rgba(255,68,68,.15); color: var(--error); }
-  .badge-blue  { background: rgba(88,101,242,.15); color: var(--accent); }
-  .badge-yellow{ background: rgba(255,170,0,.15); color: var(--warn); }
+/* ── LOG TABLE ── */
+.log-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.log-table th { text-align: left; padding: 8px 10px; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); font-size: 11px; letter-spacing: .3px; }
+.log-table td { padding: 10px 10px; border-bottom: 1px solid var(--border); }
+.log-table tr:last-child td { border-bottom: none; }
+.log-table tr:hover td { background: rgba(255,255,255,.02); }
 
-  /* ── BAD WORDS TAGS ── */
-  .tag-list { display: flex; flex-wrap: wrap; gap: 6px; min-height: 36px; }
-  .tag {
-    background: rgba(255,68,68,.1); border: 1px solid rgba(255,68,68,.2);
-    border-radius: 6px; padding: 4px 8px; font-size: 12px; font-family: var(--mono);
-    display: flex; align-items: center; gap: 5px; color: var(--error);
-  }
-  .tag-remove { background: none; border: none; color: inherit; cursor: pointer; font-size: 14px; padding: 0; line-height: 1; }
-  .tag-input-row { display: flex; gap: 8px; }
+/* ── OAUTH / LOGIN ── */
+#login-screen {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; position: relative; z-index: 10;
+}
+.login-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 48px 40px; text-align: center;
+  max-width: 420px; width: 100%; box-shadow: 0 32px 80px rgba(0,0,0,.5);
+}
+.login-logo {
+  width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 20px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+}
+.login-card h1 { font-size: 28px; font-weight: 800; }
+.login-card p { color: var(--muted); margin: 8px 0 32px; font-size: 14px; }
+.discord-btn {
+  background: #5865F2; color: #fff; border: none; border-radius: 10px;
+  padding: 14px 28px; font-family: var(--font); font-size: 15px; font-weight: 700;
+  cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: background .15s, transform .1s;
+}
+.discord-btn:hover { background: #4752c4; transform: translateY(-1px); }
+.discord-btn:active { transform: translateY(0); }
 
-  /* ── LOG TABLE ── */
-  .log-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .log-table th { text-align: left; padding: 8px 10px; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); font-size: 11px; letter-spacing: .3px; }
-  .log-table td { padding: 10px 10px; border-bottom: 1px solid var(--border); }
-  .log-table tr:last-child td { border-bottom: none; }
-  .log-table tr:hover td { background: rgba(255,255,255,.02); }
+/* ── GUILD PICKER MODAL ── */
+.guild-modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.guild-modal-overlay.open { opacity: 1; pointer-events: all; }
+.guild-modal {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; width: 480px; max-width: 94vw; max-height: 80vh;
+  overflow: hidden; display: flex; flex-direction: column;
+  box-shadow: 0 40px 100px rgba(0,0,0,.7);
+  transform: scale(.96) translateY(10px); transition: transform .2s;
+}
+.guild-modal-overlay.open .guild-modal { transform: scale(1) translateY(0); }
+.guild-modal-header {
+  padding: 20px 24px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+}
+.guild-modal-header h3 { font-size: 16px; font-weight: 700; flex: 1; }
+.guild-modal-sub { font-size: 12px; color: var(--muted); }
+.modal-close {
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  display: flex; align-items: center; padding: 6px; border-radius: 8px;
+  transition: color .15s, background .15s;
+}
+.modal-close:hover { color: var(--text); background: var(--border); }
+.guild-list {
+  overflow-y: auto; padding: 12px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.guild-list::-webkit-scrollbar { width: 4px; }
+.guild-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.guild-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-radius: 12px; cursor: pointer;
+  border: 1px solid transparent; transition: all .15s;
+}
+.guild-card:hover { background: rgba(88,101,242,.08); border-color: rgba(88,101,242,.2); }
+.guild-card.selected { background: rgba(88,101,242,.12); border-color: rgba(88,101,242,.4); }
+.guild-card-icon {
+  width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0; overflow: hidden;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: #fff;
+}
+.guild-card-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+.guild-card-name { flex: 1; font-size: 14px; font-weight: 600; }
+.guild-card-arrow { color: var(--muted); display: flex; align-items: center; }
+.guild-card.selected .guild-card-arrow { color: var(--accent); }
+.guild-empty {
+  padding: 40px 20px; text-align: center; color: var(--muted); font-size: 13px;
+}
 
-  /* ── OAUTH / LOGIN ── */
-  #login-screen {
-    display: flex; align-items: center; justify-content: center;
-    min-height: 100vh; position: relative; z-index: 10;
-  }
-  .login-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 20px; padding: 48px 40px; text-align: center;
-    max-width: 420px; width: 100%;
-    box-shadow: 0 32px 80px rgba(0,0,0,.5);
-  }
-  .login-logo {
-    width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 20px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 32px;
-  }
-  .login-card h1 { font-size: 28px; font-weight: 800; }
-  .login-card p { color: var(--muted); margin: 8px 0 32px; font-size: 14px; }
-  .discord-btn {
-    background: #5865F2; color: #fff; border: none; border-radius: 10px;
-    padding: 14px 28px; font-family: var(--font); font-size: 15px; font-weight: 700;
-    cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
-    transition: background .15s, transform .1s;
-  }
-  .discord-btn:hover { background: #4752c4; transform: translateY(-1px); }
-  .discord-btn:active { transform: translateY(0); }
+/* ── SECTION TABS ── */
+.section-tabs {
+  display: flex; gap: 4px; margin-bottom: 20px; background: var(--card);
+  padding: 4px; border-radius: 10px; border: 1px solid var(--border); width: fit-content;
+}
+.tab {
+  padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+  color: var(--muted); cursor: pointer; border: none; background: none;
+  font-family: var(--font); transition: all .15s;
+}
+.tab.active { background: var(--accent); color: #fff; }
 
-  /* ── SECTION TABS ── */
-  .section-tabs { display: flex; gap: 4px; margin-bottom: 20px; background: var(--card); padding: 4px; border-radius: 10px; border: 1px solid var(--border); width: fit-content; }
-  .tab { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; border: none; background: none; font-family: var(--font); transition: all .15s; }
-  .tab.active { background: var(--accent); color: #fff; }
+/* ── SLIDER ── */
+.slider-row { display: flex; align-items: center; gap: 12px; }
+input[type=range] {
+  -webkit-appearance: none; flex: 1; height: 4px;
+  background: var(--border); border-radius: 4px; outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 16px; height: 16px;
+  border-radius: 50%; background: var(--accent); cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(88,101,242,.3);
+}
+.slider-val { font-family: var(--mono); font-size: 13px; color: var(--accent); min-width: 32px; text-align: right; }
 
-  /* ── SLIDER ── */
-  .slider-row { display: flex; align-items: center; gap: 12px; }
-  input[type=range] {
-    -webkit-appearance: none; flex: 1; height: 4px;
-    background: var(--border); border-radius: 4px; outline: none;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 16px; height: 16px;
-    border-radius: 50%; background: var(--accent); cursor: pointer;
-    box-shadow: 0 0 0 3px rgba(88,101,242,.3);
-  }
-  .slider-val {
-    font-family: var(--mono); font-size: 13px; color: var(--accent);
-    min-width: 32px; text-align: right;
-  }
+/* ── LEVEL ROLES TABLE ── */
+.level-role-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+}
+.level-role-row:last-child { border-bottom: none; }
+.level-badge {
+  background: rgba(88,101,242,.2); color: var(--accent); border-radius: 6px;
+  padding: 3px 10px; font-size: 12px; font-weight: 700; min-width: 64px; text-align: center;
+}
 
-  /* ── LEVEL ROLES TABLE ── */
-  .level-role-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
-  .level-role-row:last-child { border-bottom: none; }
-  .level-badge { background: rgba(88,101,242,.2); color: var(--accent); border-radius: 6px; padding: 3px 10px; font-size: 12px; font-weight: 700; min-width: 64px; text-align: center; }
+/* ── TOAST ── */
+#toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--success); color: #fff;
+  padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 600;
+  opacity: 0; transform: translateY(8px); transition: all .3s;
+  pointer-events: none; z-index: 9999; display: flex; align-items: center; gap: 8px;
+}
+#toast.show { opacity: 1; transform: translateY(0); }
 
-  /* ── TOAST ── */
-  #toast {
-    position: fixed; bottom: 24px; right: 24px;
-    background: var(--success); color: #fff;
-    padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 600;
-    opacity: 0; transform: translateY(8px); transition: all .3s; pointer-events: none; z-index: 9999;
-  }
-  #toast.show { opacity: 1; transform: translateY(0); }
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+/* ── MOBILE TOGGLE ── */
+.menu-btn {
+  display: none; position: fixed; top: 16px; left: 16px; z-index: 200;
+  background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+  padding: 8px; cursor: pointer; color: var(--text);
+}
+@media(max-width:900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 16px; padding-top: 60px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .settings-grid { grid-template-columns: 1fr; }
+  .settings-card.full { grid-column: 1; }
+  .menu-btn { display: flex; }
+}
+@media(max-width:560px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .field-row { grid-template-columns: 1fr; }
+}
 
-  /* ── MOBILE TOGGLE ── */
-  .menu-btn { display: none; position: fixed; top: 16px; left: 16px; z-index: 200; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px; cursor: pointer; color: var(--text); font-size: 18px; }
+/* ── CANVAS BACKGROUND ── */
+#bg-canvas {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0; opacity: .55;
+}
 
-  @media(max-width: 900px) {
-    .sidebar { transform: translateX(-100%); }
-    .sidebar.open { transform: translateX(0); }
-    .main { margin-left: 0; padding: 16px; padding-top: 60px; }
-    .stats-grid { grid-template-columns: 1fr 1fr; }
-    .settings-grid { grid-template-columns: 1fr; }
-    .settings-card.full { grid-column: 1; }
-    .menu-btn { display: flex; }
-  }
-  @media(max-width: 560px) {
-    .stats-grid { grid-template-columns: 1fr; }
-    .field-row { grid-template-columns: 1fr; }
-  }
+/* ── LOADING SCREEN ── */
+#loading-screen {
+  position: fixed; inset: 0; z-index: 9000;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg); transition: opacity .5s ease;
+}
+#loading-screen.fade-out { opacity: 0; pointer-events: none; }
+.loading-inner { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+#loading-msg { font-size: 13px; color: var(--muted); letter-spacing: .5px; }
 
-  /* ── CANVAS BACKGROUND ── */
-  #bg-canvas {
-    position: fixed; inset: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 0; opacity: .55;
-  }
-
-  /* ── LOADING SCREEN ── */
-  #loading-screen {
-    position: fixed; inset: 0; z-index: 9000;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--bg);
-    transition: opacity .5s ease;
-  }
-  #loading-screen.fade-out { opacity: 0; pointer-events: none; }
-
-  .loading-inner { display: flex; flex-direction: column; align-items: center; gap: 28px; }
-  #loading-msg { font-size: 13px; color: var(--muted); letter-spacing: .5px; }
-
-  /* ── ATOM LOADER (loading screen) ── */
-  .atom-loader {
-    position: relative; width: 80px; height: 80px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .nucleus {
-    width: 14px; height: 14px; border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, var(--accent2), var(--accent));
-    box-shadow: 0 0 16px var(--accent), 0 0 32px rgba(88,101,242,.4);
-    animation: pulse-nucleus 2s ease-in-out infinite;
-    position: relative; z-index: 2;
-  }
-  @keyframes pulse-nucleus {
-    0%,100% { transform: scale(1); box-shadow: 0 0 16px var(--accent), 0 0 32px rgba(88,101,242,.4); }
-    50%      { transform: scale(1.2); box-shadow: 0 0 24px var(--accent2), 0 0 48px rgba(0,191,255,.5); }
-  }
-  .orbit {
-    position: absolute; border-radius: 50%;
-    border: 1.5px solid rgba(88,101,242,.35);
-    display: flex; align-items: flex-start; justify-content: center;
-  }
-  .orbit-1 { width: 46px; height: 46px; animation: spin 2.4s linear infinite; }
-  .orbit-2 { width: 66px; height: 66px; animation: spin 3.6s linear infinite reverse; transform: rotate(60deg); }
-  .orbit-3 { width: 86px; height: 86px; animation: spin 5s linear infinite; transform: rotate(120deg); }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .orbit-2 { animation: spin2 3.6s linear infinite; }
-  .orbit-3 { animation: spin3 5s linear infinite; }
-  @keyframes spin2 { from { transform: rotate(60deg); } to { transform: rotate(420deg); } }
-  @keyframes spin3 { from { transform: rotate(120deg); } to { transform: rotate(480deg); } }
-
-  .electron {
-    width: 6px; height: 6px; border-radius: 50%; margin-top: -3px;
-    background: var(--accent2);
-    box-shadow: 0 0 8px var(--accent2), 0 0 16px rgba(0,191,255,.6);
-    animation: electron-glow 1.5s ease-in-out infinite alternate;
-  }
-  .orbit-1 .electron { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
-  .orbit-3 .electron { background: #a78bfa; box-shadow: 0 0 8px #a78bfa; }
-  @keyframes electron-glow {
-    from { opacity: .7; transform: scale(.9); }
-    to   { opacity: 1;  transform: scale(1.2); }
-  }
-
-  /* ── BACKGROUND ATOM RINGS (decorative, on app bg) ── */
-  .bg-atom {
-    position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
-  }
-  .bg-ring {
-    position: absolute; border-radius: 50%;
-    border: 1px solid rgba(88,101,242,.08);
-    animation: bg-spin linear infinite;
-  }
-  @keyframes bg-spin { to { transform: rotate(360deg); } }
-  .bg-atom-dot {
-    position: absolute; border-radius: 50%; top: 0; left: 50%;
-    margin-left: -3px; margin-top: -3px;
-    width: 6px; height: 6px;
-    background: rgba(88,101,242,.4);
-    box-shadow: 0 0 10px rgba(88,101,242,.5);
-  }
-
-  /* ── LOGIN SCREEN ATOM (decorative) ── */
-  .login-atom {
-    position: absolute; pointer-events: none;
-    opacity: .18;
-  }
+/* ── ATOM LOADER ── */
+.atom-loader {
+  position: relative; width: 80px; height: 80px;
+  display: flex; align-items: center; justify-content: center;
+}
+.nucleus {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--accent2), var(--accent));
+  box-shadow: 0 0 16px var(--accent), 0 0 32px rgba(88,101,242,.4);
+  animation: pulse-nucleus 2s ease-in-out infinite;
+  position: relative; z-index: 2;
+}
+@keyframes pulse-nucleus {
+  0%,100% { box-shadow: 0 0 16px var(--accent), 0 0 32px rgba(88,101,242,.4); transform: scale(1); }
+  50%      { box-shadow: 0 0 24px var(--accent2), 0 0 48px rgba(0,191,255,.5); transform: scale(1.2); }
+}
+.orbit {
+  position: absolute; border-radius: 50%; border: 1px solid transparent;
+}
+.orbit-1 { width: 44px; height: 44px; border-color: rgba(88,101,242,.5); animation: spin1 1.6s linear infinite; }
+.orbit-2 { width: 64px; height: 64px; border-color: rgba(0,191,255,.35); animation: spin2 2.4s linear infinite; }
+.orbit-3 { width: 80px; height: 80px; border-color: rgba(167,139,250,.25); animation: spin3 3.2s linear infinite; }
+.electron {
+  position: absolute; width: 6px; height: 6px; border-radius: 50%; top: -3px; left: 50%; margin-left: -3px;
+}
+.orbit-1 .electron { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.orbit-2 .electron { background: var(--accent2); box-shadow: 0 0 8px var(--accent2); }
+.orbit-3 .electron { background: #a78bfa; box-shadow: 0 0 8px #a78bfa; }
+@keyframes spin1 { to { transform: rotate(360deg); } }
+@keyframes spin2 { to { transform: rotate(-360deg); } }
+@keyframes spin3 { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
-<!-- ── CANVAS BACKGROUND (atom rings) ── -->
 <canvas id="bg-canvas"></canvas>
 
-<!-- ── LOADING SCREEN ── -->
+<!-- LOADING SCREEN -->
 <div id="loading-screen">
   <div class="loading-inner">
     <div class="atom-loader">
@@ -444,85 +449,120 @@
       <div class="orbit orbit-2"><div class="electron"></div></div>
       <div class="orbit orbit-3"><div class="electron"></div></div>
     </div>
-    <p id="loading-msg">Connecting to Discord...</p>
+    <div id="loading-msg">Connecting...</div>
   </div>
 </div>
 
-<!-- ── LOGIN SCREEN ── -->
+<!-- LOGIN SCREEN -->
 <div id="login-screen" style="display:none">
   <div class="login-card">
-    <div class="login-logo">⚡</div>
+    <div class="login-logo">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    </div>
     <h1>Jiro Dashboard</h1>
-    <p>Sign in with Discord to manage your server settings.</p>
+    <p>Sign in with Discord to manage your servers</p>
     <button class="discord-btn" onclick="startOAuth()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-      Login with Discord
+      <svg width="22" height="16" viewBox="0 0 71 55" fill="white"><path d="M60.105 4.898A58.55 58.55 0 0 0 45.653.165a.22.22 0 0 0-.233.11 40.784 40.784 0 0 0-1.8 3.696c-5.456-.817-10.886-.817-16.23 0-.485-1.164-1.201-2.587-1.828-3.696a.229.229 0 0 0-.233-.11 58.387 58.387 0 0 0-14.452 4.733.207.207 0 0 0-.095.082C1.578 18.73-.944 32.144.293 45.39a.244.244 0 0 0 .093.167c6.073 4.46 11.955 7.167 17.729 8.962a.231.231 0 0 0 .249-.082 42.08 42.08 0 0 0 3.627-5.9.225.225 0 0 0-.123-.312 38.772 38.772 0 0 1-5.539-2.64.228.228 0 0 1-.022-.378 31.792 31.792 0 0 0 1.1-.862.22.22 0 0 1 .23-.031c11.619 5.305 24.198 5.305 35.68 0a.219.219 0 0 1 .233.028c.356.293.728.586 1.103.865a.228.228 0 0 1-.02.378 36.384 36.384 0 0 1-5.54 2.637.227.227 0 0 0-.121.315 47.249 47.249 0 0 0 3.624 5.897.225.225 0 0 0 .249.084c5.801-1.794 11.684-4.502 17.757-8.961a.228.228 0 0 0 .092-.164c1.48-15.315-2.48-28.618-10.497-40.412a.18.18 0 0 0-.093-.084zm-36.38 32.427c-3.497 0-6.38-3.211-6.38-7.156 0-3.944 2.827-7.156 6.38-7.156 3.583 0 6.437 3.24 6.38 7.156 0 3.945-2.827 7.156-6.38 7.156zm23.593 0c-3.498 0-6.38-3.211-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.945-2.798 7.156-6.38 7.156z"/></svg>
+      Continue with Discord
     </button>
-    <p style="font-size:11px;color:var(--muted);margin-top:16px;">You'll be redirected to Discord to authorize Jiro.</p>
   </div>
 </div>
 
-<!-- ── MAIN APP (hidden until login) ── -->
+<!-- GUILD PICKER MODAL -->
+<div id="guild-modal" class="guild-modal-overlay" onclick="handleModalBg(event)">
+  <div class="guild-modal">
+    <div class="guild-modal-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <h3>Select a Server</h3>
+      <span class="guild-modal-sub" id="guild-modal-count"></span>
+      <button class="modal-close" onclick="closeGuildModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div id="guild-list" class="guild-list"></div>
+  </div>
+</div>
+
+<!-- APP -->
 <div id="app" style="display:none">
-  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+  <button class="menu-btn" onclick="toggleSidebar()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
 
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <h1>⚡ Jiro</h1>
+      <h1>Jiro</h1>
       <p>NixAI Dashboard</p>
     </div>
 
-    <div class="guild-select" onclick="showGuildPicker()">
-      <div class="guild-icon" id="guild-icon-text">J</div>
-      <span class="guild-name" id="guild-name-display">Select a Server</span>
-      <span class="guild-arrow">▼</span>
+    <!-- Guild selector -->
+    <div class="guild-select" onclick="openGuildModal()">
+      <div class="guild-icon" id="guild-icon-wrap">
+        <span id="guild-icon-text">?</span>
+      </div>
+      <span class="guild-name" id="guild-name-display">Select a server</span>
+      <span class="guild-arrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </span>
     </div>
 
     <nav class="nav">
       <div class="nav-section">
         <div class="nav-label">Overview</div>
-        <div class="nav-item active" data-page="overview" onclick="navigate('overview', this)">
-          <span class="icon">🏠</span> Overview
+        <div class="nav-item active" onclick="navigate('overview',this)">
+          <span class="nav-ic"><?xml version="1.0"?><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>
+          Overview
         </div>
       </div>
+
       <div class="nav-section">
-        <div class="nav-label">Configuration</div>
-        <div class="nav-item" data-page="welcome" onclick="navigate('welcome', this)">
-          <span class="icon">👋</span> Welcome & Leave
+        <div class="nav-label">Modules</div>
+        <div class="nav-item" onclick="navigate('welcome',this)">
+          <span class="nav-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          Welcome & Leave
         </div>
-        <div class="nav-item" data-page="automod" onclick="navigate('automod', this)">
-          <span class="icon">🛡️</span> Auto-Mod
+        <div class="nav-item" onclick="navigate('automod',this)">
+          <span class="nav-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+          Auto-Mod
         </div>
-        <div class="nav-item" data-page="antiraid" onclick="navigate('antiraid', this)">
-          <span class="icon">🔒</span> Anti-Raid
+        <div class="nav-item" onclick="navigate('logs',this)">
+          <span class="nav-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
+          Logs
         </div>
-        <div class="nav-item" data-page="logs" onclick="navigate('logs', this)">
-          <span class="icon">📋</span> Logging
+        <div class="nav-item" onclick="navigate('levels',this)">
+          <span class="nav-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span>
+          Levels & XP
         </div>
-        <div class="nav-item" data-page="levels" onclick="navigate('levels', this)">
-          <span class="icon">📈</span> Levels & XP
+        <div class="nav-item" onclick="navigate('selfroles',this)">
+          <span class="nav-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></span>
+          Roles
         </div>
-        <div class="nav-item" data-page="roles" onclick="navigate('roles', this)">
-          <span class="icon">🎭</span> Roles
+        <div class="nav-item" onclick="navigate('ai',this)">
+          <span class="nav-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+          AI Settings
         </div>
-        <div class="nav-item" data-page="ai" onclick="navigate('ai', this)">
-          <span class="icon">🤖</span> AI Settings
-        </div>
-        <div class="nav-item" data-page="giveaways" onclick="navigate('giveaways', this)">
-          <span class="icon">🎁</span> Giveaways
+        <div class="nav-item" onclick="navigate('antiraid',this)">
+          <span class="nav-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+          Anti-Raid
         </div>
       </div>
     </nav>
 
     <div class="sidebar-footer">
       <div class="user-tag">
-        <div class="user-avatar" id="user-avatar-initial">?</div>
+        <div class="user-avatar" id="user-avatar-wrap">
+          <span id="user-avatar-initial">?</span>
+        </div>
         <div class="user-info">
           <div class="name" id="user-display-name">Loading...</div>
-          <div class="disc" id="user-discriminator">#0000</div>
+          <div class="disc" id="user-discriminator"></div>
         </div>
-        <button class="logout-btn" onclick="logout()" title="Log out">↩</button>
+        <button class="logout-btn" onclick="logout()" title="Sign out">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
       </div>
     </div>
   </aside>
@@ -533,36 +573,46 @@
     <!-- OVERVIEW PAGE -->
     <div id="page-overview" class="page active">
       <div class="page-header">
-        <h2>Overview</h2>
+        <h2>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Overview
+        </h2>
         <p>Your server at a glance</p>
       </div>
       <div class="stats-grid">
-        <div class="stat-card" style="--accent-c: var(--accent)">
-          <div class="stat-icon">👥</div>
+        <div class="stat-card" style="--accent-c:var(--accent)">
+          <div class="stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
           <div class="stat-info">
             <div class="label">Total Members</div>
             <div class="value" id="stat-members">—</div>
-            <div class="delta">online now</div>
           </div>
         </div>
-        <div class="stat-card" style="--accent-c: var(--success)">
-          <div class="stat-icon">📋</div>
+        <div class="stat-card" style="--accent-c:var(--success)">
+          <div class="stat-icon" style="background:rgba(0,200,83,.15);color:var(--success)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+          </div>
           <div class="stat-info">
             <div class="label">Channels</div>
             <div class="value" id="stat-channels">—</div>
           </div>
         </div>
-        <div class="stat-card" style="--accent-c: var(--warn)">
-          <div class="stat-icon">🎭</div>
+        <div class="stat-card" style="--accent-c:var(--warn)">
+          <div class="stat-icon" style="background:rgba(255,170,0,.15);color:var(--warn)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          </div>
           <div class="stat-info">
             <div class="label">Roles</div>
             <div class="value" id="stat-roles">—</div>
           </div>
         </div>
-        <div class="stat-card" style="--accent-c: var(--error)">
-          <div class="stat-icon">⚠️</div>
+        <div class="stat-card" style="--accent-c:var(--error)">
+          <div class="stat-icon" style="background:rgba(255,68,68,.15);color:var(--error)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
           <div class="stat-info">
-            <div class="label">Warnings</div>
+            <div class="label">Warnings Issued</div>
             <div class="value" id="stat-warns">—</div>
           </div>
         </div>
@@ -571,46 +621,32 @@
       <div class="settings-grid">
         <div class="settings-card">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(88,101,242,.15)">✅</div>
+            <div class="card-header-icon" style="background:rgba(88,101,242,.15);color:var(--accent)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
             <h3>Module Status</h3>
           </div>
           <div class="card-body">
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Auto-Mod</div><div class="t-desc">Spam, links, bad words</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="automod_enabled"></button>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Welcome Messages</div><div class="t-desc">Greet new members</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="welcome_enabled"></button>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Leave Messages</div><div class="t-desc">Goodbye when members leave</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="leave_enabled"></button>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Leveling System</div><div class="t-desc">XP and rank cards</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="levels_enabled"></button>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">AI Responses</div><div class="t-desc">NixAI mention replies</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="ai_enabled"></button>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Anti-Raid Mode</div><div class="t-desc">Auto-lockdown on raids</div></div>
-              <button class="toggle" onclick="toggleBtn(this)" data-key="raid_mode"></button>
-            </div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Auto-Mod</div><div class="t-desc">Spam, links, bad words</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="automod_enabled"></button></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Welcome Messages</div><div class="t-desc">Greet new members</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="welcome_enabled"></button></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Leave Messages</div><div class="t-desc">Goodbye when members leave</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="leave_enabled"></button></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Leveling System</div><div class="t-desc">XP and rank cards</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="levels_enabled"></button></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">AI Responses</div><div class="t-desc">NixAI mention replies</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="ai_enabled"></button></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Anti-Raid Mode</div><div class="t-desc">Auto-lockdown on raids</div></div><button class="toggle" onclick="toggleBtn(this)" data-key="raid_mode"></button></div>
           </div>
         </div>
         <div class="settings-card">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(0,200,83,.15)">📋</div>
+            <div class="card-header-icon" style="background:rgba(0,200,83,.15);color:var(--success)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
             <h3>Recent Actions</h3>
           </div>
           <div class="card-body" style="padding:0">
             <table class="log-table">
-              <thead><tr><th>Action</th><th>User</th><th>When</th></tr></thead>
+              <thead><tr><th>Action</th><th>Target</th><th>When</th></tr></thead>
               <tbody id="recent-log">
-                <tr><td colspan="3" style="text-align:center;color:var(--muted);padding:20px">Select a server to see logs</td></tr>
+                <tr><td colspan="3" style="text-align:center;color:var(--muted);padding:24px">Select a server to see logs</td></tr>
               </tbody>
             </table>
           </div>
@@ -621,69 +657,43 @@
     <!-- WELCOME PAGE -->
     <div id="page-welcome" class="page">
       <div class="page-header">
-        <h2>👋 Welcome & Leave</h2>
+        <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Welcome &amp; Leave</h2>
         <p>Configure join and leave messages, auto-role</p>
       </div>
       <div class="settings-grid">
         <div class="settings-card">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(0,200,83,.15)">🟢</div>
+            <div class="card-header-icon" style="background:rgba(0,200,83,.15);color:var(--success)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div>
             <h3>Welcome Messages</h3>
             <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('welcome')">Save</button>
           </div>
           <div class="card-body">
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Enable Welcome</div><div class="t-desc">Send a message when someone joins</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="welcome_enabled"></button>
-            </div>
-            <div class="field">
-              <label>Welcome Channel</label>
-              <select id="welcome_channel_id"><option value="">— select channel —</option></select>
-            </div>
-            <div class="field">
-              <label>Welcome Message</label>
-              <textarea id="welcome_message" placeholder="Welcome to {server}, {user}! You are member #{count}."></textarea>
-              <span class="field-hint">Placeholders: {user} {username} {server} {count}</span>
-            </div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Enable Welcome</div><div class="t-desc">Send a message when someone joins</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="welcome_enabled"></button></div>
+            <div class="field"><label>Welcome Channel</label><select id="welcome_channel_id"><option value="">— select channel —</option></select></div>
+            <div class="field"><label>Welcome Message</label><textarea id="welcome_message" placeholder="Welcome to {server}, {user}! You are member #{count}."></textarea><span class="field-hint">Placeholders: {user} {username} {server} {count}</span></div>
           </div>
         </div>
         <div class="settings-card">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(255,68,68,.15)">🔴</div>
+            <div class="card-header-icon" style="background:rgba(255,68,68,.15);color:var(--error)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div>
             <h3>Leave Messages</h3>
             <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('leave')">Save</button>
           </div>
           <div class="card-body">
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Enable Leave</div><div class="t-desc">Send a message when someone leaves</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="leave_enabled"></button>
-            </div>
-            <div class="field">
-              <label>Leave Channel</label>
-              <select id="leave_channel_id"><option value="">— select channel —</option></select>
-            </div>
-            <div class="field">
-              <label>Leave Message</label>
-              <textarea id="leave_message" placeholder="{username} has left {server}. Goodbye!"></textarea>
-              <span class="field-hint">Placeholders: {user} {username} {server}</span>
-            </div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Enable Leave</div><div class="t-desc">Send a message when someone leaves</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="leave_enabled"></button></div>
+            <div class="field"><label>Leave Channel</label><select id="leave_channel_id"><option value="">— select channel —</option></select></div>
+            <div class="field"><label>Leave Message</label><textarea id="leave_message" placeholder="{username} has left {server}. Goodbye!"></textarea><span class="field-hint">Placeholders: {user} {username} {server}</span></div>
           </div>
         </div>
         <div class="settings-card full">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(255,170,0,.15)">🎭</div>
+            <div class="card-header-icon" style="background:rgba(255,170,0,.15);color:var(--warn)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
             <h3>Auto-Role on Join</h3>
             <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('autorole')">Save</button>
           </div>
           <div class="card-body">
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Enable Auto-Role</div><div class="t-desc">Automatically assign a role to new members</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="autorole_enabled"></button>
-            </div>
-            <div class="field" style="max-width:320px">
-              <label>Role to assign</label>
-              <select id="autorole_id"><option value="">— select role —</option></select>
-            </div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Enable Auto-Role</div><div class="t-desc">Automatically assign a role to new members</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="autorole_enabled"></button></div>
+            <div class="field" style="max-width:320px"><label>Role to assign</label><select id="autorole_id"><option value="">— select role —</option></select></div>
           </div>
         </div>
       </div>
@@ -692,135 +702,55 @@
     <!-- AUTOMOD PAGE -->
     <div id="page-automod" class="page">
       <div class="page-header">
-        <h2>🛡️ Auto-Mod</h2>
+        <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Auto-Mod</h2>
         <p>Spam detection, invite blocking, bad word filtering</p>
       </div>
       <div class="settings-grid">
         <div class="settings-card">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(88,101,242,.15)">⚙️</div>
-            <h3>General Settings</h3>
+            <div class="card-header-icon" style="background:rgba(88,101,242,.15);color:var(--accent)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <h3>Filters</h3>
             <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('automod')">Save</button>
           </div>
           <div class="card-body">
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Enable Auto-Mod</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="automod_enabled"></button>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Block Discord Invites</div><div class="t-desc">Delete messages with invite links</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="block_invites"></button>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Block External Links</div><div class="t-desc">Delete messages with any URL</div></div>
-              <button class="toggle" onclick="toggleBtn(this)" data-key="block_links"></button>
-            </div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Enable Auto-Mod</div><div class="t-desc">Global on/off switch</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="automod_enabled"></button></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Block Invite Links</div><div class="t-desc">Remove discord.gg links</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="block_invites"></button></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Block External Links</div><div class="t-desc">Remove http/https URLs</div></div><button class="toggle" onclick="toggleBtn(this)" data-key="block_links"></button></div>
           </div>
         </div>
         <div class="settings-card">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(255,170,0,.15)">⏱️</div>
+            <div class="card-header-icon" style="background:rgba(255,170,0,.15);color:var(--warn)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
             <h3>Spam Detection</h3>
             <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('spam')">Save</button>
           </div>
           <div class="card-body">
-            <div class="field">
-              <label>Message Limit (per window)</label>
+            <div class="field"><label>Message Limit</label>
               <div class="slider-row">
-                <input type="range" id="spam_limit" min="2" max="50" value="5" oninput="document.getElementById('spam_limit_val').textContent=this.value"/>
+                <input type="range" id="spam_limit" min="2" max="20" value="5" oninput="document.getElementById('spam_limit_val').textContent=this.value">
                 <span class="slider-val" id="spam_limit_val">5</span>
               </div>
-              <span class="field-hint">Messages sent before triggering the spam filter</span>
+              <span class="field-hint">Max messages before timeout</span>
             </div>
-            <div class="field">
-              <label>Time Window (seconds)</label>
+            <div class="field"><label>Time Window (seconds)</label>
               <div class="slider-row">
-                <input type="range" id="spam_window" min="1" max="60" value="5" oninput="document.getElementById('spam_window_val').textContent=this.value"/>
+                <input type="range" id="spam_window" min="2" max="30" value="5" oninput="document.getElementById('spam_window_val').textContent=this.value">
                 <span class="slider-val" id="spam_window_val">5</span>
               </div>
-              <span class="field-hint">Rolling window to count messages in</span>
             </div>
           </div>
         </div>
         <div class="settings-card full">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(255,68,68,.15)">🚫</div>
-            <h3>Bad Word Filter</h3>
+            <div class="card-header-icon" style="background:rgba(255,68,68,.15);color:var(--error)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <h3>Bad Words</h3>
+            <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('automod')">Save</button>
           </div>
           <div class="card-body">
-            <div class="tag-list" id="bad-words-list"></div>
-            <div class="tag-input-row" style="margin-top:10px">
-              <input class="field" type="text" id="bad-word-input" placeholder="Add a word..." style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none" onkeydown="if(event.key==='Enter')addBadWord()"/>
-              <button class="btn btn-danger" onclick="addBadWord()">+ Add</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ANTI-RAID PAGE -->
-    <div id="page-antiraid" class="page">
-      <div class="page-header">
-        <h2>🔒 Anti-Raid</h2>
-        <p>Auto-lockdown and mention spam protection</p>
-      </div>
-      <div class="settings-grid">
-        <div class="settings-card">
-          <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(255,68,68,.15)">🚨</div>
-            <h3>Raid Detection</h3>
-            <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('antiraid')">Save</button>
-          </div>
-          <div class="card-body">
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Auto Raid Detection</div><div class="t-desc">Trigger on unusual join spikes</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="auto_raid_detection"></button>
-            </div>
-            <div class="field">
-              <label>Join Threshold</label>
-              <div class="slider-row">
-                <input type="range" id="raid_join_threshold" min="2" max="50" value="8" oninput="document.getElementById('rtv').textContent=this.value"/>
-                <span class="slider-val" id="rtv">8</span>
-              </div>
-              <span class="field-hint">Joins within the window to trigger raid mode</span>
-            </div>
-            <div class="field">
-              <label>Time Window (seconds)</label>
-              <div class="slider-row">
-                <input type="range" id="raid_window_secs" min="2" max="60" value="10" oninput="document.getElementById('rwv').textContent=this.value"/>
-                <span class="slider-val" id="rwv">10</span>
-              </div>
-            </div>
-            <div class="field">
-              <label>Raid Action</label>
-              <select id="raid_action">
-                <option value="kick">Kick</option>
-                <option value="ban">Ban</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="settings-card">
-          <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(255,170,0,.15)">📣</div>
-            <h3>Mention Spam</h3>
-            <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('mentions')">Save</button>
-          </div>
-          <div class="card-body">
-            <div class="field">
-              <label>Max Mentions Per Message</label>
-              <div class="slider-row">
-                <input type="range" id="mention_limit" min="1" max="20" value="5" oninput="document.getElementById('mlv').textContent=this.value"/>
-                <span class="slider-val" id="mlv">5</span>
-              </div>
-              <span class="field-hint">Mute user if they ping more than this many people</span>
-            </div>
-            <div class="field">
-              <label>Mute Duration (minutes)</label>
-              <div class="slider-row">
-                <input type="range" id="mention_mute_mins" min="1" max="120" value="10" oninput="document.getElementById('mmv').textContent=this.value"/>
-                <span class="slider-val" id="mmv">10</span>
-              </div>
+            <div id="bad-words-list" class="tag-list"></div>
+            <div class="tag-input-row">
+              <input class="field" style="flex:1" id="bad-word-input" placeholder="Add a word..." onkeydown="if(event.key==='Enter')addBadWord()">
+              <button class="btn btn-danger btn-sm" onclick="addBadWord()">Add</button>
             </div>
           </div>
         </div>
@@ -830,39 +760,34 @@
     <!-- LOGS PAGE -->
     <div id="page-logs" class="page">
       <div class="page-header">
-        <h2>📋 Logging</h2>
-        <p>Configure which events get logged and where</p>
+        <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Logs</h2>
+        <p>Audit log channels and event tracking</p>
       </div>
       <div class="settings-grid">
         <div class="settings-card">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(88,101,242,.15)">📍</div>
-            <h3>Log Channel</h3>
+            <div class="card-header-icon" style="background:rgba(88,101,242,.15);color:var(--accent)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg></div>
+            <h3>Log Channels</h3>
             <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('logs')">Save</button>
           </div>
           <div class="card-body">
-            <div class="field">
-              <label>Log Channel</label>
-              <select id="log_channel"><option value="">— select channel —</option></select>
-            </div>
-            <div class="field">
-              <label>Mod Log Channel</label>
-              <select id="mod_log_channel"><option value="">— select channel —</option></select>
-            </div>
+            <div class="field"><label>Main Log Channel</label><select id="log_channel_id"><option value="">— none —</option></select></div>
+            <div class="field"><label>Mod Log Channel</label><select id="mod_log_channel_id"><option value="">— none —</option></select></div>
           </div>
         </div>
         <div class="settings-card">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(0,200,83,.15)">🔔</div>
-            <h3>Logged Events</h3>
+            <div class="card-header-icon" style="background:rgba(0,200,83,.15);color:var(--success)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <h3>Events to Log</h3>
+            <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('logs')">Save</button>
           </div>
           <div class="card-body">
-            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Message Deletions</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="log_msg_delete"></button></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Message Deletes</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="log_msg_delete"></button></div>
             <div class="toggle-row"><div class="toggle-info"><div class="t-label">Message Edits</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="log_msg_edit"></button></div>
             <div class="toggle-row"><div class="toggle-info"><div class="t-label">Member Joins</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="log_joins"></button></div>
             <div class="toggle-row"><div class="toggle-info"><div class="t-label">Member Leaves</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="log_leaves"></button></div>
-            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Role Changes</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="log_roles"></button></div>
-            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Nickname Changes</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="log_nicks"></button></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Role Changes</div></div><button class="toggle" onclick="toggleBtn(this)" data-key="log_roles"></button></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Nickname Changes</div></div><button class="toggle" onclick="toggleBtn(this)" data-key="log_nicks"></button></div>
             <div class="toggle-row"><div class="toggle-info"><div class="t-label">Voice Activity</div></div><button class="toggle" onclick="toggleBtn(this)" data-key="log_voice"></button></div>
           </div>
         </div>
@@ -872,110 +797,90 @@
     <!-- LEVELS PAGE -->
     <div id="page-levels" class="page">
       <div class="page-header">
-        <h2>📈 Levels & XP</h2>
-        <p>Configure the XP system and level-up roles</p>
+        <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Levels &amp; XP</h2>
+        <p>XP gain, level-up announcements, and role rewards</p>
       </div>
       <div class="settings-grid">
         <div class="settings-card">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(88,101,242,.15)">⚙️</div>
+            <div class="card-header-icon" style="background:rgba(88,101,242,.15);color:var(--accent)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
             <h3>XP Settings</h3>
             <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('levels')">Save</button>
           </div>
           <div class="card-body">
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Enable Leveling</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="levels_enabled"></button>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Level-Up Announcements</div><div class="t-desc">Send a message in channel when someone levels up</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="lvl_announce"></button>
-            </div>
-            <div class="field">
-              <label>Level-Up Channel (blank = same channel)</label>
-              <select id="lvl_channel"><option value="">— same channel —</option></select>
-            </div>
-            <div class="field-row">
-              <div class="field">
-                <label>Min XP per message</label>
-                <input type="number" id="xp_min" value="15" min="1" max="100"/>
-              </div>
-              <div class="field">
-                <label>Max XP per message</label>
-                <input type="number" id="xp_max" value="25" min="1" max="200"/>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Enable Leveling</div><div class="t-desc">Track XP and level progression</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="levels_enabled"></button></div>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Level-Up Announcements</div><div class="t-desc">Post when a member levels up</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="lvl_announce"></button></div>
+            <div class="field"><label>Announcement Channel</label><select id="lvl_channel"><option value="">— same channel —</option></select></div>
+            <div class="field"><label>XP Min per Message</label>
+              <div class="slider-row">
+                <input type="range" id="xp_min" min="1" max="50" value="15" oninput="document.getElementById('xp_min_val').textContent=this.value">
+                <span class="slider-val" id="xp_min_val">15</span>
               </div>
             </div>
-            <div class="field">
-              <label>XP Cooldown (seconds)</label>
-              <input type="number" id="xp_cooldown" value="60" min="5" max="3600"/>
-              <span class="field-hint">Minimum gap between XP grants per user</span>
+            <div class="field"><label>XP Max per Message</label>
+              <div class="slider-row">
+                <input type="range" id="xp_max" min="1" max="100" value="25" oninput="document.getElementById('xp_max_val').textContent=this.value">
+                <span class="slider-val" id="xp_max_val">25</span>
+              </div>
+            </div>
+            <div class="field"><label>XP Cooldown (seconds)</label>
+              <div class="slider-row">
+                <input type="range" id="xp_cooldown" min="10" max="300" value="60" oninput="document.getElementById('xp_cd_val').textContent=this.value">
+                <span class="slider-val" id="xp_cd_val">60</span>
+              </div>
             </div>
           </div>
         </div>
         <div class="settings-card">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(255,170,0,.15)">🎭</div>
+            <div class="card-header-icon" style="background:rgba(255,170,0,.15);color:var(--warn)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
             <h3>Level Roles</h3>
             <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('level_roles')">Save</button>
           </div>
           <div class="card-body">
-            <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Award a role when a member reaches a level.</p>
-            <div id="level-roles-list">
-              <div style="color:var(--muted);font-size:13px;text-align:center;padding:20px 0">No level roles configured</div>
+            <div id="level-roles-list"></div>
+            <div class="field-row" style="margin-top:8px">
+              <div class="field"><label>At Level</label><input type="number" id="new-level-num" min="1" max="100" placeholder="e.g. 5"></div>
+              <div class="field"><label>Assign Role</label><select id="new-level-role"><option value="">— select role —</option></select></div>
             </div>
-            <div class="field-row" style="margin-top:12px">
-              <div class="field">
-                <label>Level</label>
-                <input type="number" id="new-level-num" placeholder="5" min="1"/>
-              </div>
-              <div class="field">
-                <label>Role</label>
-                <select id="new-level-role"><option value="">— select role —</option></select>
-              </div>
-            </div>
-            <button class="btn btn-primary btn-sm" style="margin-top:8px" onclick="addLevelRole()">+ Add Level Role</button>
+            <button class="btn btn-ghost btn-sm" style="margin-top:4px" onclick="addLevelRole()">Add Level Role</button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- ROLES PAGE -->
-    <div id="page-roles" class="page">
+    <div id="page-selfroles" class="page">
       <div class="page-header">
-        <h2>🎭 Roles</h2>
-        <p>Self-assignable roles and role management</p>
+        <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Roles</h2>
+        <p>Self-assignable roles and moderator role config</p>
       </div>
       <div class="settings-grid">
         <div class="settings-card full">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(88,101,242,.15)">🙋</div>
+            <div class="card-header-icon" style="background:rgba(88,101,242,.15);color:var(--accent)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
             <h3>Self-Assignable Roles</h3>
             <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('selfroles')">Save</button>
           </div>
           <div class="card-body">
-            <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Members can assign these roles to themselves using <code style="background:var(--surface);padding:1px 5px;border-radius:4px">/iam</code> or <code style="background:var(--surface);padding:1px 5px;border-radius:4px">?iam</code>.</p>
-            <div class="tag-list" id="self-roles-list"></div>
-            <div class="tag-input-row" style="margin-top:10px">
+            <p style="font-size:12px;color:var(--muted);margin-bottom:4px">Members can assign these to themselves using <code style="background:var(--surface);padding:2px 6px;border-radius:4px">?iam</code></p>
+            <div id="self-roles-list" class="tag-list"></div>
+            <div class="tag-input-row" style="margin-top:8px">
               <select id="self-role-add" style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none"><option value="">— select role to add —</option></select>
-              <button class="btn btn-primary" onclick="addSelfRole()">+ Add</button>
+              <button class="btn btn-primary btn-sm" onclick="addSelfRole()">Add</button>
             </div>
           </div>
         </div>
         <div class="settings-card full">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(255,170,0,.15)">🛡️</div>
-            <h3>Mod Role</h3>
+            <div class="card-header-icon" style="background:rgba(255,170,0,.15);color:var(--warn)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg></div>
+            <h3>Moderator Roles</h3>
             <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('modrole')">Save</button>
           </div>
-          <div class="card-body" style="flex-direction:row;flex-wrap:wrap;gap:20px;align-items:flex-end">
-            <div class="field" style="flex:1;min-width:200px">
-              <label>Moderator Role</label>
-              <select id="mod_role"><option value="">— select role —</option></select>
-              <span class="field-hint">Members with this role can use moderation commands</span>
-            </div>
-            <div class="field" style="flex:1;min-width:200px">
-              <label>Admin Role</label>
-              <select id="admin_role"><option value="">— select role —</option></select>
+          <div class="card-body">
+            <div class="field-row">
+              <div class="field"><label>Moderator Role</label><select id="mod_role"><option value="">— none —</option></select></div>
+              <div class="field"><label>Admin Role</label><select id="admin_role"><option value="">— none —</option></select></div>
             </div>
           </div>
         </div>
@@ -985,65 +890,97 @@
     <!-- AI PAGE -->
     <div id="page-ai" class="page">
       <div class="page-header">
-        <h2>🤖 AI Settings</h2>
-        <p>Configure NixAI behavior per server</p>
+        <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>AI Settings</h2>
+        <p>Jiro AI model, personality, and channel configuration</p>
       </div>
       <div class="settings-grid">
         <div class="settings-card full">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(0,191,255,.15)">🧠</div>
+            <div class="card-header-icon" style="background:rgba(88,101,242,.15);color:var(--accent)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
             <h3>AI Configuration</h3>
             <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('ai')">Save</button>
           </div>
           <div class="card-body">
-            <div class="toggle-row">
-              <div class="toggle-info"><div class="t-label">Enable AI Responses</div><div class="t-desc">Jiro replies when mentioned</div></div>
-              <button class="toggle on" onclick="toggleBtn(this)" data-key="ai_enabled"></button>
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Enable AI Responses</div><div class="t-desc">Jiro responds when mentioned</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="ai_enabled"></button></div>
+            <div class="field-row">
+              <div class="field">
+                <label>AI Model</label>
+                <select id="ai_model">
+                  <option value="cyanix/axion-5-ensemble">Axion 5 Ensemble (default)</option>
+                  <option value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile</option>
+                  <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant</option>
+                  <option value="gemma2-9b-it">Gemma 2 9B</option>
+                  <option value="meta-llama/llama-4-scout-17b-16e-instruct">Llama 4 Scout 17B</option>
+                  <option value="meta-llama/llama-4-maverick-17b-128e-instruct">Llama 4 Maverick 17B</option>
+                </select>
+              </div>
+              <div class="field"><label>Restricted to Channel</label><select id="ai_channel"><option value="">— all channels —</option></select></div>
             </div>
             <div class="field">
-              <label>AI Model</label>
-              <select id="ai_model">
-                <option value="cyanix/axion-5-ensemble">Axion-5 Ensemble (best)</option>
-                <option value="llama-3.3-70b-versatile">Llama 3.3 70B</option>
-                <option value="llama-3.1-70b-versatile">Llama 3.1 70B</option>
-                <option value="meta-llama/llama-4-scout-17b-16e-instruct">Llama 4 Scout (vision)</option>
-                <option value="gemma2-9b-it">Gemma 2 9B</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>Custom System Prompt</label>
-              <textarea id="ai_system_prompt" style="min-height:120px" placeholder="You are Jiro, a helpful and friendly Discord bot assistant..."></textarea>
-              <span class="field-hint">Leave blank for the default NixAI personality</span>
-            </div>
-            <div class="field">
-              <label>AI Channel (blank = all channels)</label>
-              <select id="ai_channel"><option value="">— all channels —</option></select>
-              <span class="field-hint">Restrict AI responses to a specific channel</span>
+              <label>System Prompt</label>
+              <textarea id="ai_system_prompt" style="min-height:100px" placeholder="You are Jiro, a helpful Discord bot by NixAI..."></textarea>
+              <span class="field-hint">Defines Jiro's personality. Leave blank to use the default.</span>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- GIVEAWAYS PAGE -->
-    <div id="page-giveaways" class="page">
+    <!-- ANTI-RAID PAGE -->
+    <div id="page-antiraid" class="page">
       <div class="page-header">
-        <h2>🎁 Giveaways</h2>
-        <p>Manage active and past giveaways</p>
+        <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Anti-Raid</h2>
+        <p>Raid detection, lockdown settings, and mention spam protection</p>
       </div>
       <div class="settings-grid">
-        <div class="settings-card full">
+        <div class="settings-card">
           <div class="card-header">
-            <div class="card-header-icon" style="background:rgba(255,170,0,.15)">🎉</div>
-            <h3>Active Giveaways</h3>
+            <div class="card-header-icon" style="background:rgba(255,68,68,.15);color:var(--error)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <h3>Raid Detection</h3>
+            <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('antiraid')">Save</button>
           </div>
-          <div class="card-body" style="padding:0">
-            <table class="log-table">
-              <thead><tr><th>Prize</th><th>Channel</th><th>Ends</th><th>Winners</th><th>Entries</th><th></th></tr></thead>
-              <tbody id="giveaways-table">
-                <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">No active giveaways</td></tr>
-              </tbody>
-            </table>
+          <div class="card-body">
+            <div class="toggle-row"><div class="toggle-info"><div class="t-label">Auto-Detect Raids</div><div class="t-desc">Auto-trigger lockdown on mass joins</div></div><button class="toggle on" onclick="toggleBtn(this)" data-key="auto_raid_detection"></button></div>
+            <div class="field"><label>Join Threshold (users)</label>
+              <div class="slider-row">
+                <input type="range" id="raid_join_threshold" min="3" max="30" value="8" oninput="document.getElementById('rtv').textContent=this.value">
+                <span class="slider-val" id="rtv">8</span>
+              </div>
+              <span class="field-hint">Joins needed to trigger within the window</span>
+            </div>
+            <div class="field"><label>Detection Window (seconds)</label>
+              <div class="slider-row">
+                <input type="range" id="raid_window_secs" min="5" max="60" value="10" oninput="document.getElementById('rwv').textContent=this.value">
+                <span class="slider-val" id="rwv">10</span>
+              </div>
+            </div>
+            <div class="field"><label>Action on Raid</label>
+              <select id="raid_action">
+                <option value="kick">Kick new joiners</option>
+                <option value="ban">Ban new joiners</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="settings-card">
+          <div class="card-header">
+            <div class="card-header-icon" style="background:rgba(255,170,0,.15);color:var(--warn)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            <h3>Mention Spam</h3>
+            <button class="btn btn-primary btn-sm save-btn" onclick="saveSection('mentions')">Save</button>
+          </div>
+          <div class="card-body">
+            <div class="field"><label>Max Mentions per Message</label>
+              <div class="slider-row">
+                <input type="range" id="mention_limit" min="2" max="20" value="5" oninput="document.getElementById('mlv').textContent=this.value">
+                <span class="slider-val" id="mlv">5</span>
+              </div>
+            </div>
+            <div class="field"><label>Mute Duration (minutes)</label>
+              <div class="slider-row">
+                <input type="range" id="mention_mute_mins" min="1" max="60" value="10" oninput="document.getElementById('mmv').textContent=this.value">
+                <span class="slider-val" id="mmv">10</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1053,47 +990,45 @@
 </div>
 
 <!-- TOAST -->
-<div id="toast">✅ Settings saved!</div>
+<div id="toast"></div>
 
 <script>
 // ═══════════════════════════════════════════════
-//  CONFIG
+//  CONFIG  —  fill in your values
 // ═══════════════════════════════════════════════
 const CONFIG = {
-  CLIENT_ID:    '1487252546060947476',
-  REDIRECT_URI:  window.location.origin + window.location.pathname,
-  API_BASE:     'https://hfxagwcwaalrmaqzhyfj.supabase.co',
-  SCOPES:       'identify guilds',
+  CLIENT_ID:   'YOUR_DISCORD_CLIENT_ID',
+  REDIRECT_URI: window.location.origin + window.location.pathname,
+  SCOPES:      'identify',
+  API_BASE:    'https://YOUR_PROJECT.supabase.co',
 };
 
 // ═══════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════
 let state = {
-  user: null, token: null, guilds: [],
-  selectedGuild: null, guildConfig: {},
-  channels: [], roles: [], badWords: [], selfRoles: [], levelRoles: {},
+  user: null, token: null,
+  guilds: [], selectedGuild: null, selectedGuildData: null,
+  guildConfig: {}, channels: [], roles: [],
+  badWords: [], selfRoles: [], levelRoles: {},
 };
 
 // ═══════════════════════════════════════════════
-//  LOADING HELPERS
+//  LOADING SCREEN
 // ═══════════════════════════════════════════════
+function showLoading(msg = 'Loading...') {
+  const s = document.getElementById('loading-screen');
+  s.classList.remove('fade-out');
+  s.style.display = 'flex';
+  setLoadingMsg(msg);
+}
 function setLoadingMsg(msg) {
-  const el = document.getElementById('loading-msg');
-  if (el) el.textContent = msg;
+  document.getElementById('loading-msg').textContent = msg;
 }
 function hideLoading() {
-  const el = document.getElementById('loading-screen');
-  if (!el) return;
-  el.classList.add('fade-out');
-  setTimeout(() => { el.style.display = 'none'; }, 520);
-}
-function showLoading(msg = 'Loading...') {
-  const el = document.getElementById('loading-screen');
-  if (!el) return;
-  el.style.display = 'flex';
-  el.classList.remove('fade-out');
-  setLoadingMsg(msg);
+  const s = document.getElementById('loading-screen');
+  s.classList.add('fade-out');
+  setTimeout(() => { s.style.display = 'none'; }, 500);
 }
 
 // ═══════════════════════════════════════════════
@@ -1116,47 +1051,25 @@ function startOAuth() {
 async function handleOAuthCallback(code, returnedState) {
   const savedState = sessionStorage.getItem('oauth_state');
   if (savedState && returnedState !== savedState) {
-    console.warn('OAuth state mismatch — ignoring');
-    // Don't hard-fail: clear and treat as fresh login
     sessionStorage.removeItem('oauth_state');
     return false;
   }
-
   setLoadingMsg('Exchanging auth code...');
-
   try {
-    const res = await fetch(
-      `${CONFIG.API_BASE}/functions/v1/discord-oauth`,
-      {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ code, redirect_uri: CONFIG.REDIRECT_URI }),
-      }
-    );
-
-    // Always clean the URL regardless of success/fail so we never re-process
-    window.history.replaceState({}, document.title,
-      window.location.origin + window.location.pathname);
+    const res = await fetch(`${CONFIG.API_BASE}/functions/v1/discord-oauth`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, redirect_uri: CONFIG.REDIRECT_URI }),
+    });
+    window.history.replaceState({}, document.title, window.location.origin + window.location.pathname);
     sessionStorage.removeItem('oauth_state');
-
-    if (!res.ok) {
-      console.error('discord-oauth edge fn returned', res.status, await res.text());
-      return false;
-    }
-
+    if (!res.ok) return false;
     const data = await res.json();
-    if (!data.access_token) {
-      console.error('No access_token in response', data);
-      return false;
-    }
-
+    if (!data.access_token) return false;
     localStorage.setItem('jiro_token', data.access_token);
     return true;
-  } catch (err) {
-    console.error('OAuth callback fetch error:', err);
-    // Still clean the URL so reload doesn't loop
-    window.history.replaceState({}, document.title,
-      window.location.origin + window.location.pathname);
+  } catch {
+    window.history.replaceState({}, document.title, window.location.origin + window.location.pathname);
     sessionStorage.removeItem('oauth_state');
     return false;
   }
@@ -1164,62 +1077,38 @@ async function handleOAuthCallback(code, returnedState) {
 
 function logout() {
   localStorage.removeItem('jiro_token');
-  state = { user: null, token: null, guilds: [], selectedGuild: null,
+  state = { user: null, token: null, guilds: [], selectedGuild: null, selectedGuildData: null,
             guildConfig: {}, channels: [], roles: [], badWords: [], selfRoles: [], levelRoles: {} };
   document.getElementById('app').style.display = 'none';
   showLogin();
 }
 
 // ═══════════════════════════════════════════════
-//  BOOT — called on DOMContentLoaded
+//  BOOT
 // ═══════════════════════════════════════════════
 async function boot() {
   showLoading('Connecting...');
-
   const params = new URLSearchParams(window.location.search);
   const code   = params.get('code');
   const rState = params.get('state');
 
-  // 1. Handle OAuth redirect code
   if (code) {
     setLoadingMsg('Signing you in...');
     const ok = await handleOAuthCallback(code, rState);
-    if (!ok) {
-      hideLoading();
-      showLogin();
-      return;
-    }
+    if (!ok) { hideLoading(); showLogin(); return; }
   }
 
-  // 2. Check for stored token
   const token = localStorage.getItem('jiro_token');
-  if (!token) {
-    hideLoading();
-    showLogin();
-    return;
-  }
+  if (!token) { hideLoading(); showLogin(); return; }
   state.token = token;
 
-  // 3. Load user identity
   setLoadingMsg('Loading your profile...');
-  try {
-    await loadUser();
-  } catch (err) {
-    console.error('loadUser failed:', err);
-    localStorage.removeItem('jiro_token');
-    hideLoading();
-    showLogin();
-    return;
-  }
+  try { await loadUser(); }
+  catch { localStorage.removeItem('jiro_token'); hideLoading(); showLogin(); return; }
 
-  // 4. Load guilds
   setLoadingMsg('Fetching your servers...');
-  try {
-    await loadGuilds();
-  } catch (err) {
-    console.warn('loadGuilds failed (non-fatal):', err);
-    // Not fatal — show app with empty guild list
-  }
+  try { await loadGuilds(); }
+  catch (err) { console.warn('loadGuilds failed:', err); }
 
   hideLoading();
   showApp();
@@ -1257,49 +1146,73 @@ async function supabaseApi(path, opts = {}) {
     body: opts.body ? JSON.stringify(opts.body) : undefined,
   });
   if (res.status === 401) { logout(); throw new Error('Unauthorized'); }
-  if (!res.ok) throw new Error(`Supabase API ${res.status}`);
+  if (!res.ok) throw new Error(`API ${res.status}`);
   return res.json();
 }
 
+// ═══════════════════════════════════════════════
+//  USER + GUILDS
+// ═══════════════════════════════════════════════
 async function loadUser() {
   const data = await discordApi('/users/@me');
   state.user = data;
-  document.getElementById('user-avatar-initial').textContent =
-    data.username ? data.username[0].toUpperCase() : '?';
-  document.getElementById('user-display-name').textContent =
-    data.global_name || data.username || 'Unknown';
-  document.getElementById('user-discriminator').textContent =
-    data.discriminator && data.discriminator !== '0' ? `#${data.discriminator}` : '';
+  const initial = data.username ? data.username[0].toUpperCase() : '?';
+  const avatarWrap = document.getElementById('user-avatar-wrap');
+  if (data.avatar) {
+    avatarWrap.innerHTML = `<img src="https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.webp?size=64" alt="">`;
+  } else {
+    document.getElementById('user-avatar-initial').textContent = initial;
+  }
+  document.getElementById('user-display-name').textContent = data.global_name || data.username || 'Unknown';
+  const disc = data.discriminator && data.discriminator !== '0' ? `#${data.discriminator}` : '';
+  document.getElementById('user-discriminator').textContent = disc;
 }
 
 async function loadGuilds() {
-  const data = await supabaseApi('/functions/v1/bot_guilds', {
+  const data = await supabaseApi('/functions/v1/bot-guilds', {
     method: 'POST',
-    body:   { access_token: state.token },
+    body: { access_token: state.token },
   });
   state.guilds = Array.isArray(data) ? data : (data.guilds || []);
+
+  // Auto-select if only one guild
+  if (state.guilds.length === 1) {
+    await selectGuild(state.guilds[0].id);
+  }
 }
 
 async function selectGuild(guildId) {
   state.selectedGuild = guildId;
   const guild = state.guilds.find(g => g.id === guildId);
+  state.selectedGuildData = guild || null;
+
+  // Update sidebar display
+  const nameEl = document.getElementById('guild-name-display');
+  const iconWrap = document.getElementById('guild-icon-wrap');
   if (guild) {
-    document.getElementById('guild-name-display').textContent = guild.name;
-    document.getElementById('guild-icon-text').textContent    = guild.name[0].toUpperCase();
+    nameEl.textContent = guild.name;
+    if (guild.icon) {
+      iconWrap.innerHTML = `<img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp?size=64" alt="${guild.name}" onerror="this.parentElement.innerHTML='${guild.name[0].toUpperCase()}'">`;
+    } else {
+      iconWrap.innerHTML = `<span>${guild.name[0].toUpperCase()}</span>`;
+    }
   }
+
   try {
-    const [config, channels, roles, badWords] = await Promise.all([
-      supabaseApi('/functions/v1/bot_guilds', { method: 'POST', body: { action: 'config',   guild_id: guildId, access_token: state.token } }),
-      supabaseApi('/functions/v1/bot_guilds', { method: 'POST', body: { action: 'channels', guild_id: guildId, access_token: state.token } }),
-      supabaseApi('/functions/v1/bot_guilds', { method: 'POST', body: { action: 'roles',    guild_id: guildId, access_token: state.token } }),
-      supabaseApi('/functions/v1/bot_guilds', { method: 'POST', body: { action: 'badwords', guild_id: guildId, access_token: state.token } }),
+    const [configData, channels, roles, badWords] = await Promise.all([
+      supabaseApi('/functions/v1/bot-guilds', { method: 'POST', body: { action: 'config',   guild_id: guildId, access_token: state.token } }),
+      supabaseApi('/functions/v1/bot-guilds', { method: 'POST', body: { action: 'channels', guild_id: guildId, access_token: state.token } }),
+      supabaseApi('/functions/v1/bot-guilds', { method: 'POST', body: { action: 'roles',    guild_id: guildId, access_token: state.token } }),
+      supabaseApi('/functions/v1/bot-guilds', { method: 'POST', body: { action: 'badwords', guild_id: guildId, access_token: state.token } }),
     ]);
-    state.guildConfig = config;
-    state.channels    = Array.isArray(channels) ? channels : (channels.channels || []);
-    state.roles       = Array.isArray(roles)    ? roles    : (roles.roles       || []);
-    state.badWords    = Array.isArray(badWords)  ? badWords : (badWords.words   || []);
-    state.selfRoles   = state.guildConfig.self_roles  || [];
-    state.levelRoles  = state.guildConfig.level_roles || {};
+
+    state.guildConfig = configData.config || configData || {};
+    state.guildConfig._stats = configData.stats || {};
+    state.channels   = Array.isArray(channels) ? channels : (channels.channels || []);
+    state.roles      = Array.isArray(roles)    ? roles    : (roles.roles       || []);
+    state.badWords   = Array.isArray(badWords)  ? badWords : (badWords.words   || []);
+    state.selfRoles  = state.guildConfig.self_roles  || [];
+    state.levelRoles = state.guildConfig.level_roles || {};
     populateAll();
   } catch (err) {
     console.error('Failed to load guild data:', err);
@@ -1308,7 +1221,60 @@ async function selectGuild(guildId) {
 }
 
 // ═══════════════════════════════════════════════
-//  DEMO DATA
+//  GUILD MODAL
+// ═══════════════════════════════════════════════
+function openGuildModal() {
+  const list = document.getElementById('guild-list');
+  const count = document.getElementById('guild-modal-count');
+
+  if (!state.guilds.length) {
+    list.innerHTML = `<div class="guild-empty">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 12px;display:block"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      <p>No servers found</p>
+      <p style="margin-top:4px;font-size:11px">Make sure Jiro is in your server and you have Manage Server permission</p>
+    </div>`;
+    count.textContent = '';
+  } else {
+    count.textContent = `${state.guilds.length} server${state.guilds.length !== 1 ? 's' : ''}`;
+    list.innerHTML = state.guilds.map(g => {
+      const iconUrl = g.icon ? `https://cdn.discordapp.com/icons/${g.id}/${g.icon}.webp?size=64` : null;
+      const initial = g.name ? g.name[0].toUpperCase() : '?';
+      const selected = g.id === state.selectedGuild;
+      const iconHtml = iconUrl
+        ? `<img src="${iconUrl}" alt="${escHtml(g.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+          + `<span style="display:none">${initial}</span>`
+        : `<span>${initial}</span>`;
+      return `<div class="guild-card${selected ? ' selected' : ''}" onclick="pickGuild('${g.id}')">
+        <div class="guild-card-icon">${iconHtml}</div>
+        <span class="guild-card-name">${escHtml(g.name)}</span>
+        <span class="guild-card-arrow">
+          ${selected
+            ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
+            : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>`
+          }
+        </span>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('guild-modal').classList.add('open');
+}
+
+function closeGuildModal() {
+  document.getElementById('guild-modal').classList.remove('open');
+}
+function handleModalBg(e) {
+  if (e.target === document.getElementById('guild-modal')) closeGuildModal();
+}
+async function pickGuild(id) {
+  closeGuildModal();
+  await selectGuild(id);
+}
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ═══════════════════════════════════════════════
+//  DEMO DATA (fallback when API is unreachable)
 // ═══════════════════════════════════════════════
 function loadDemoData(guildId, guild) {
   state.channels = [
@@ -1324,24 +1290,17 @@ function loadDemoData(guildId, guild) {
     spam_limit: 5, spam_window: 5, welcome_enabled: true, leave_enabled: true,
     levels_enabled: true, ai_enabled: true, raid_mode: false,
     welcome_channel_id: '222', leave_channel_id: '222',
-    log_channel: '333', mod_log_channel: '444',
+    log_channel_id: '333', mod_log_channel_id: '444',
     welcome_message: 'Welcome to {server}, {user}! You are member #{count}.',
-    leave_message: '{username} has left {server}. Goodbye!',
+    leave_message:   '{username} has left {server}. Goodbye!',
     ai_model: 'cyanix/axion-5-ensemble',
+    _stats: { warnings: 7, mod_7d: 3, member_count: 1234 },
   };
   state.badWords   = ['badword1', 'example'];
   state.selfRoles  = ['502'];
   state.levelRoles = { '5': '503' };
-  document.getElementById('stat-members').textContent  = '1,234';
-  document.getElementById('stat-channels').textContent = '42';
-  document.getElementById('stat-roles').textContent    = state.roles.length;
-  document.getElementById('stat-warns').textContent    = '7';
-  document.getElementById('recent-log').innerHTML = `
-    <tr><td><span class="badge badge-red">Ban</span></td><td>spammer#0001</td><td>2 mins ago</td></tr>
-    <tr><td><span class="badge badge-yellow">Warn</span></td><td>user#1234</td><td>15 mins ago</td></tr>
-    <tr><td><span class="badge badge-blue">Join</span></td><td>newmember#5678</td><td>1 hour ago</td></tr>
-  `;
   populateAll();
+  showToast('Demo mode — API unreachable', 'warn');
 }
 
 // ═══════════════════════════════════════════════
@@ -1351,72 +1310,125 @@ function populateAll() {
   populateChannelSelects();
   populateRoleSelects();
   applyConfig();
+  populateStats();
   renderBadWords();
   renderSelfRoles();
   renderLevelRoles();
 }
+
 function populateChannelSelects() {
-  const opts = ['<option value="">— none —</option>',
-    ...state.channels.map(c => `<option value="${c.id}">#${c.name}</option>`)].join('');
-  ['welcome_channel_id','leave_channel_id','log_channel','mod_log_channel','lvl_channel','ai_channel']
+  const none = '<option value="">— none —</option>';
+  const opts = none + state.channels.map(c => `<option value="${c.id}">#${escHtml(c.name)}</option>`).join('');
+  ['welcome_channel_id','leave_channel_id','log_channel_id','mod_log_channel_id','lvl_channel','ai_channel']
     .forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = opts; });
 }
+
 function populateRoleSelects() {
-  const opts = ['<option value="">— none —</option>',
-    ...state.roles.map(r => `<option value="${r.id}">${r.name}</option>`)].join('');
+  const none = '<option value="">— none —</option>';
+  const opts = none + state.roles.map(r => `<option value="${r.id}">${escHtml(r.name)}</option>`).join('');
   ['autorole_id','mod_role','admin_role','self-role-add','new-level-role']
     .forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = opts; });
 }
+
 function applyConfig() {
   const c = state.guildConfig;
+
+  // Toggle buttons
   document.querySelectorAll('[data-key]').forEach(btn => {
     const key = btn.dataset.key;
     if (key in c) btn.classList.toggle('on', !!c[key]);
   });
+
+  // Field values — keys match exactly what the Python cogs use
   const map = {
-    welcome_channel_id: c.welcome_channel_id, leave_channel_id: c.leave_channel_id,
-    welcome_message: c.welcome_message, leave_message: c.leave_message,
-    log_channel: c.log_channel, mod_log_channel: c.mod_log_channel,
-    spam_limit: c.spam_limit||5, spam_window: c.spam_window||5,
-    raid_join_threshold: c.raid_join_threshold||8, raid_window_secs: c.raid_window_secs||10,
-    raid_action: c.raid_action||'kick', mention_limit: c.mention_limit||5,
-    mention_mute_mins: c.mention_mute_mins||10, ai_model: c.ai_model,
-    ai_system_prompt: c.ai_system_prompt, ai_channel: c.ai_channel,
-    autorole_id: c.autorole_id, xp_min: c.xp_min||15, xp_max: c.xp_max||25, xp_cooldown: c.xp_cooldown||60,
+    welcome_channel_id:  c.welcome_channel_id,
+    leave_channel_id:    c.leave_channel_id,
+    welcome_message:     c.welcome_message,
+    leave_message:       c.leave_message,
+    log_channel_id:      c.log_channel_id,       // logs.py uses log_channel_id
+    mod_log_channel_id:  c.mod_log_channel_id,
+    spam_limit:          c.spam_limit   || 5,
+    spam_window:         c.spam_window  || 5,
+    raid_join_threshold: c.raid_join_threshold || 8,
+    raid_window_secs:    c.raid_window_secs    || 10,
+    raid_action:         c.raid_action  || 'kick',
+    mention_limit:       c.mention_limit       || 5,
+    mention_mute_mins:   c.mention_mute_mins   || 10,
+    ai_model:            c.ai_model,
+    ai_system_prompt:    c.ai_system_prompt,
+    ai_channel:          c.ai_channel,
+    autorole_id:         c.autorole_id,
+    mod_role:            c.mod_role,
+    admin_role:          c.admin_role,
+    xp_min:              c.xp_min      || 15,
+    xp_max:              c.xp_max      || 25,
+    xp_cooldown:         c.xp_cooldown || 60,
+    lvl_channel:         c.lvl_channel,
   };
+
   for (const [id, val] of Object.entries(map)) {
     const el = document.getElementById(id);
     if (el && val !== undefined && val !== null) el.value = val;
   }
-  ['spam_limit','spam_window','raid_join_threshold','raid_window_secs','mention_limit','mention_mute_mins']
-    .forEach(id => {
-      const el = document.getElementById(id); if (!el) return;
-      const vm = { spam_limit:'spam_limit_val', spam_window:'spam_window_val',
-                   raid_join_threshold:'rtv', raid_window_secs:'rwv',
-                   mention_limit:'mlv', mention_mute_mins:'mmv' };
-      const d = document.getElementById(vm[id]);
-      if (d) d.textContent = el.value;
-    });
+
+  // Sync slider display values
+  const sliders = {
+    spam_limit: 'spam_limit_val', spam_window: 'spam_window_val',
+    raid_join_threshold: 'rtv', raid_window_secs: 'rwv',
+    mention_limit: 'mlv', mention_mute_mins: 'mmv',
+    xp_min: 'xp_min_val', xp_max: 'xp_max_val', xp_cooldown: 'xp_cd_val',
+  };
+  for (const [sid, vid] of Object.entries(sliders)) {
+    const sel = document.getElementById(sid);
+    const val = document.getElementById(vid);
+    if (sel && val) val.textContent = sel.value;
+  }
+}
+
+function populateStats() {
+  const stats = state.guildConfig._stats || {};
+  document.getElementById('stat-channels').textContent = state.channels.length || '—';
+  document.getElementById('stat-roles').textContent    = state.roles.length    || '—';
+  document.getElementById('stat-warns').textContent    = stats.warnings        ?? '—';
+  document.getElementById('stat-members').textContent  = stats.member_count
+    ? stats.member_count.toLocaleString() : '—';
+
+  // Populate recent log table from stats if available
+  if (stats.recent_logs && stats.recent_logs.length) {
+    const tbody = document.getElementById('recent-log');
+    const colorMap = { Ban: 'badge-red', Warn: 'badge-yellow', Kick: 'badge-red', Mute: 'badge-yellow', Unban: 'badge-green', AutoMod: 'badge-blue' };
+    tbody.innerHTML = stats.recent_logs.map(l => {
+      const action = l.action || 'Action';
+      const cls = colorMap[action.split(':')[0]] || 'badge-blue';
+      const when = l.created_at ? `<t:${Math.floor(new Date(l.created_at)/1000)}:R>` : '—';
+      return `<tr><td><span class="badge ${cls}">${escHtml(action)}</span></td><td style="color:var(--muted);font-size:11px">${escHtml(l.target_id||'')}</td><td style="color:var(--muted);font-size:11px">${when}</td></tr>`;
+    }).join('');
+  }
 }
 
 // ═══════════════════════════════════════════════
 //  SAVE
 // ═══════════════════════════════════════════════
 async function saveSection(section) {
-  if (!state.selectedGuild) { showToast('⚠️ Select a server first!', 'warn'); return; }
+  if (!state.selectedGuild) { showToast('Select a server first', 'warn'); return; }
   const updates = gatherSection(section);
+  const btn = event?.target;
+  if (btn) { btn.textContent = 'Saving...'; btn.disabled = true; }
   try {
-    await supabaseApi('/functions/v1/bot_guilds', {
+    await supabaseApi('/functions/v1/bot-guilds', {
       method: 'POST',
       body: { action: 'save_config', guild_id: state.selectedGuild, access_token: state.token, updates },
     });
     Object.assign(state.guildConfig, updates);
-    showToast('✅ Settings saved!');
+    showToast('Settings saved');
   } catch {
     Object.assign(state.guildConfig, updates);
-    showToast('✅ Saved locally (demo mode)');
+    showToast('Saved locally (demo mode)', 'warn');
+  } finally {
+    if (btn) { btn.textContent = 'Save'; btn.disabled = false; }
   }
 }
+
 function gatherSection(section) {
   const g  = id  => { const el = document.getElementById(id); return el ? el.value : undefined; };
   const t  = key => { const b  = document.querySelector(`[data-key="${key}"]`); return b ? b.classList.contains('on') : undefined; };
@@ -1426,7 +1438,12 @@ function gatherSection(section) {
     autorole:    { autorole_enabled: t('autorole_enabled'), autorole_id: g('autorole_id') },
     automod:     { automod_enabled: t('automod_enabled'), block_invites: t('block_invites'), block_links: t('block_links') },
     spam:        { spam_limit: parseInt(g('spam_limit')), spam_window: parseInt(g('spam_window')) },
-    logs:        { log_channel: g('log_channel'), mod_log_channel: g('mod_log_channel'), log_msg_delete: t('log_msg_delete'), log_msg_edit: t('log_msg_edit'), log_joins: t('log_joins'), log_leaves: t('log_leaves'), log_roles: t('log_roles'), log_nicks: t('log_nicks'), log_voice: t('log_voice') },
+    logs:        {
+      log_channel_id: g('log_channel_id'), mod_log_channel_id: g('mod_log_channel_id'),
+      log_msg_delete: t('log_msg_delete'), log_msg_edit: t('log_msg_edit'),
+      log_joins: t('log_joins'), log_leaves: t('log_leaves'),
+      log_roles: t('log_roles'), log_nicks: t('log_nicks'), log_voice: t('log_voice'),
+    },
     levels:      { levels_enabled: t('levels_enabled'), lvl_announce: t('lvl_announce'), lvl_channel: g('lvl_channel'), xp_min: parseInt(g('xp_min')), xp_max: parseInt(g('xp_max')), xp_cooldown: parseInt(g('xp_cooldown')) },
     level_roles: { level_roles: state.levelRoles },
     selfroles:   { self_roles: state.selfRoles },
@@ -1443,14 +1460,15 @@ function gatherSection(section) {
 function renderBadWords() {
   const list = document.getElementById('bad-words-list'); if (!list) return;
   list.innerHTML = state.badWords.length
-    ? state.badWords.map(w => `<div class="tag">${w}<button class="tag-remove" onclick="removeBadWord('${w}')">×</button></div>`).join('')
+    ? state.badWords.map(w => `<div class="tag">${escHtml(w)}<button class="tag-remove" onclick="removeBadWord('${escHtml(w)}')">×</button></div>`).join('')
     : '<span style="color:var(--muted);font-size:12px">No bad words configured.</span>';
 }
 function addBadWord() {
-  const inp = document.getElementById('bad-word-input');
+  const inp  = document.getElementById('bad-word-input');
   const word = inp.value.trim().toLowerCase();
   if (!word || state.badWords.includes(word)) return;
-  state.badWords.push(word); inp.value = ''; renderBadWords(); saveSection('automod');
+  state.badWords.push(word); inp.value = ''; renderBadWords();
+  saveSection('automod');
 }
 function removeBadWord(word) { state.badWords = state.badWords.filter(w => w !== word); renderBadWords(); }
 
@@ -1462,7 +1480,7 @@ function renderSelfRoles() {
   list.innerHTML = state.selfRoles.length
     ? state.selfRoles.map(id => {
         const role = state.roles.find(r => r.id === id);
-        return `<div class="tag" style="background:rgba(88,101,242,.1);border-color:rgba(88,101,242,.2);color:var(--accent)">${role ? role.name : id}<button class="tag-remove" onclick="removeSelfRole('${id}')">×</button></div>`;
+        return `<div class="tag" style="background:rgba(88,101,242,.1);border-color:rgba(88,101,242,.2);color:var(--accent)">${escHtml(role ? role.name : id)}<button class="tag-remove" onclick="removeSelfRole('${id}')">×</button></div>`;
       }).join('')
     : '<span style="color:var(--muted);font-size:12px">No self-roles added.</span>';
 }
@@ -1480,11 +1498,11 @@ function renderLevelRoles() {
   const list = document.getElementById('level-roles-list'); if (!list) return;
   const entries = Object.entries(state.levelRoles);
   list.innerHTML = entries.length
-    ? entries.map(([lvl, roleId]) => {
+    ? entries.sort((a,b) => parseInt(a[0]) - parseInt(b[0])).map(([lvl, roleId]) => {
         const role = state.roles.find(r => r.id === roleId);
         return `<div class="level-role-row">
-          <span class="level-badge">Lv. ${lvl}</span>
-          <span style="flex:1;font-size:13px">${role ? role.name : roleId}</span>
+          <span class="level-badge">Lv. ${escHtml(lvl)}</span>
+          <span style="flex:1;font-size:13px">${role ? escHtml(role.name) : escHtml(roleId)}</span>
           <button class="btn btn-danger btn-sm" onclick="removeLevelRole('${lvl}')">Remove</button>
         </div>`;
       }).join('')
@@ -1495,7 +1513,7 @@ function addLevelRole() {
   const rid = document.getElementById('new-level-role').value;
   if (!lvl || !rid) return;
   state.levelRoles[lvl] = rid;
-  document.getElementById('new-level-num').value = '';
+  document.getElementById('new-level-num').value  = '';
   document.getElementById('new-level-role').value = '';
   renderLevelRoles();
 }
@@ -1519,131 +1537,76 @@ function toggleSidebar() { document.getElementById('sidebar').classList.toggle('
 let toastTimer;
 function showToast(msg, type = 'success') {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = type === 'warn' ? 'var(--warn)' : type === 'error' ? 'var(--error)' : 'var(--success)';
+  const colors = { success: 'var(--success)', warn: 'var(--warn)', error: 'var(--error)' };
+  const icons  = {
+    success: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+    warn:    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+    error:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
+  };
+  t.innerHTML = (icons[type] || icons.success) + `<span>${escHtml(msg)}</span>`;
+  t.style.background = colors[type] || colors.success;
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
-}
-function showGuildPicker() {
-  if (!state.guilds.length) { showToast('⚠️ No guilds loaded', 'warn'); return; }
-  const opts   = state.guilds.map(g => `${g.name} (${g.id})`).join('\n');
-  const choice = prompt(`Your servers (paste the name or ID):\n\n${opts}`);
-  const guild  = state.guilds.find(g => g.id === choice || g.name === choice);
-  if (guild) selectGuild(guild.id);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
 }
 
 // ═══════════════════════════════════════════════
-//  CANVAS — ATOM RING BACKGROUND ANIMATION
+//  CANVAS — ATOM RING BACKGROUND
 // ═══════════════════════════════════════════════
 function initCanvas() {
   const canvas = document.getElementById('bg-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-
-  function resize() {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
   resize();
   window.addEventListener('resize', resize);
 
-  // Define several atom systems scattered around the canvas
   const atoms = [
-    { x: 0.12, y: 0.15, rings: [80, 130, 180], speed: [0.003, -0.002, 0.0015], color: [88,101,242] },
-    { x: 0.88, y: 0.75, rings: [60, 100, 145], speed: [0.0025, 0.004, -0.002],  color: [0,191,255]  },
-    { x: 0.75, y: 0.08, rings: [50, 85, 120],  speed: [-0.003, 0.002, 0.0035],  color: [167,139,250] },
-    { x: 0.05, y: 0.82, rings: [55, 90, 130],  speed: [0.004, -0.003, 0.002],   color: [0,191,255]  },
-    { x: 0.5,  y: 0.5,  rings: [70, 115, 160], speed: [-0.002, 0.003, -0.0015], color: [88,101,242] },
+    { x: 0.12, y: 0.15, rings: [80,130,180], speed: [0.003,-0.002,0.0015],  color: [88,101,242]  },
+    { x: 0.88, y: 0.75, rings: [60,100,145], speed: [0.0025,0.004,-0.002],  color: [0,191,255]   },
+    { x: 0.75, y: 0.08, rings: [50,85,120],  speed: [-0.003,0.002,0.0035],  color: [167,139,250] },
+    { x: 0.05, y: 0.82, rings: [55,90,130],  speed: [0.004,-0.003,0.002],   color: [0,191,255]   },
+    { x: 0.5,  y: 0.5,  rings: [70,115,160], speed: [-0.002,0.003,-0.0015], color: [88,101,242]  },
   ];
-
-  // Each atom has angles for each ring
   const angles = atoms.map(a => a.rings.map(() => Math.random() * Math.PI * 2));
 
-  function drawAtom(atom, anglesArr, alpha) {
-    const cx = atom.x * canvas.width;
-    const cy = atom.y * canvas.height;
-    const [r, g, b] = atom.color;
-
-    // Nucleus glow
-    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 8);
-    grad.addColorStop(0,   `rgba(${r},${g},${b},${alpha * 0.6})`);
-    grad.addColorStop(0.5, `rgba(${r},${g},${b},${alpha * 0.2})`);
-    grad.addColorStop(1,   `rgba(${r},${g},${b},0)`);
-    ctx.beginPath();
-    ctx.arc(cx, cy, 8, 0, Math.PI * 2);
-    ctx.fillStyle = grad;
-    ctx.fill();
-
-    // Rings + electrons
-    atom.rings.forEach((radius, i) => {
-      const angle = anglesArr[i];
-      // Ellipse ring (tilted)
-      const tilt = (i * Math.PI) / 3;
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(tilt);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, radius, radius * 0.38, 0, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(${r},${g},${b},${alpha * 0.12})`;
-      ctx.lineWidth = 1;
-      ctx.stroke();
-
-      // Electron dot
-      const ex = Math.cos(angle) * radius;
-      const ey = Math.sin(angle) * radius * 0.38;
-      const eg = ctx.createRadialGradient(ex, ey, 0, ex, ey, 5);
-      eg.addColorStop(0,   `rgba(${r},${g},${b},${alpha * 0.9})`);
-      eg.addColorStop(0.5, `rgba(${r},${g},${b},${alpha * 0.4})`);
-      eg.addColorStop(1,   `rgba(${r},${g},${b},0)`);
-      ctx.beginPath();
-      ctx.arc(ex, ey, 5, 0, Math.PI * 2);
-      ctx.fillStyle = eg;
-      ctx.fill();
+  function drawAtom(atom, ang, alpha) {
+    const cx = atom.x * canvas.width, cy = atom.y * canvas.height;
+    const [r,g,b] = atom.color;
+    const gr = ctx.createRadialGradient(cx,cy,0,cx,cy,8);
+    gr.addColorStop(0, `rgba(${r},${g},${b},${alpha*.6})`);
+    gr.addColorStop(1, `rgba(${r},${g},${b},0)`);
+    ctx.beginPath(); ctx.arc(cx,cy,8,0,Math.PI*2); ctx.fillStyle=gr; ctx.fill();
+    atom.rings.forEach((radius,i) => {
+      const tilt = i * Math.PI / 3;
+      ctx.save(); ctx.translate(cx,cy); ctx.rotate(tilt);
+      ctx.beginPath(); ctx.ellipse(0,0,radius,radius*.38,0,0,Math.PI*2);
+      ctx.strokeStyle = `rgba(${r},${g},${b},${alpha*.12})`; ctx.lineWidth=1; ctx.stroke();
+      const ex = Math.cos(ang[i])*radius, ey = Math.sin(ang[i])*radius*.38;
+      const eg = ctx.createRadialGradient(ex,ey,0,ex,ey,5);
+      eg.addColorStop(0, `rgba(${r},${g},${b},${alpha*.9})`);
+      eg.addColorStop(1, `rgba(${r},${g},${b},0)`);
+      ctx.beginPath(); ctx.arc(ex,ey,5,0,Math.PI*2); ctx.fillStyle=eg; ctx.fill();
       ctx.restore();
     });
   }
 
-  // Soft color wave overlay
   let wave = 0;
-
   function frame() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+    ctx.clearRect(0,0,canvas.width,canvas.height);
     wave += 0.004;
-
-    // Soft pulsing radial gradients for ambient color
-    const pulse = 0.5 + 0.5 * Math.sin(wave);
-    const grad1 = ctx.createRadialGradient(
-      canvas.width * 0.15, canvas.height * 0.2, 0,
-      canvas.width * 0.15, canvas.height * 0.2, canvas.width * 0.45
-    );
-    grad1.addColorStop(0,   `rgba(88,101,242,${0.04 + pulse * 0.03})`);
-    grad1.addColorStop(1,   'rgba(88,101,242,0)');
-    ctx.fillStyle = grad1;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    const grad2 = ctx.createRadialGradient(
-      canvas.width * 0.85, canvas.height * 0.75, 0,
-      canvas.width * 0.85, canvas.height * 0.75, canvas.width * 0.4
-    );
-    grad2.addColorStop(0,   `rgba(0,191,255,${0.03 + (1-pulse) * 0.025})`);
-    grad2.addColorStop(1,   'rgba(0,191,255,0)');
-    ctx.fillStyle = grad2;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Advance angles and draw atoms
-    atoms.forEach((atom, ai) => {
-      atom.rings.forEach((_, ri) => {
-        angles[ai][ri] += atom.speed[ri];
-      });
-      // Fade atoms at edges slightly
-      const edgeFade = Math.min(
-        atom.x, 1 - atom.x, atom.y, 1 - atom.y
-      ) * 6;
-      drawAtom(atom, angles[ai], Math.min(1, edgeFade) * 0.8);
+    const pulse = .5 + .5*Math.sin(wave);
+    const g1 = ctx.createRadialGradient(canvas.width*.15,canvas.height*.2,0,canvas.width*.15,canvas.height*.2,canvas.width*.45);
+    g1.addColorStop(0, `rgba(88,101,242,${.04+pulse*.03})`); g1.addColorStop(1,'rgba(88,101,242,0)');
+    ctx.fillStyle=g1; ctx.fillRect(0,0,canvas.width,canvas.height);
+    const g2 = ctx.createRadialGradient(canvas.width*.85,canvas.height*.75,0,canvas.width*.85,canvas.height*.75,canvas.width*.4);
+    g2.addColorStop(0, `rgba(0,191,255,${.03+(1-pulse)*.025})`); g2.addColorStop(1,'rgba(0,191,255,0)');
+    ctx.fillStyle=g2; ctx.fillRect(0,0,canvas.width,canvas.height);
+    atoms.forEach((atom,ai) => {
+      atom.rings.forEach((_,ri) => { angles[ai][ri] += atom.speed[ri]; });
+      const fade = Math.min(atom.x, 1-atom.x, atom.y, 1-atom.y)*6;
+      drawAtom(atom, angles[ai], Math.min(1,fade)*.8);
     });
-
     requestAnimationFrame(frame);
   }
   frame();
