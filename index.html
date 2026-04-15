@@ -1283,9 +1283,9 @@ async function selectGuild(guildId) {
     state.levelRoles = state.guildConfig.level_roles || {};
     populateAll();
   } catch (err) {
-    console.error('Failed to load guild data:', err);
+    showToast(err.message || String(err), 'error');
     loadDemoData(guildId, guild);
-  }
+}
 }
 
 // ═══════════════════════════════════════════════
@@ -1691,3 +1691,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+ml>
