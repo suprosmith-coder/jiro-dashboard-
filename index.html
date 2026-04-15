@@ -1002,7 +1002,7 @@ const CONFIG = {
   SCOPES:      'identify guilds',
   API_BASE:    'https://hfxagwcwaalrmaqzhyfj.supabase.co',
   // Your Supabase anon/public key — safe to expose in frontend
-  ANON_KEY:    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhmeGFnd2N3YWFscm1hcXpoeWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MzY5NzIsImV4cCI6MjA5MDIxMjk3Mn0.LMFfFRmqW34PT70zAOTj4zsUWmrDl_P4MXL0wZBkxYc',
+  ANON_KEY:    'YOUR_SUPABASE_ANON_KEY_HERE',
 };
 
 // ═══════════════════════════════════════════════
@@ -1241,10 +1241,8 @@ async function loadGuilds() {
 
   state.guilds = Array.isArray(data) ? data : (data.guilds || []);
 
-  // Auto-select if only one guild — small wait lets the user_guilds upsert
-  // finish on the edge function side before selectGuild fires its auth check
+  // Auto-select if only one guild
   if (state.guilds.length === 1) {
-    await new Promise(r => setTimeout(r, 400));
     await selectGuild(state.guilds[0].id);
   }
 }
@@ -1283,9 +1281,10 @@ async function selectGuild(guildId) {
     state.levelRoles = state.guildConfig.level_roles || {};
     populateAll();
   } catch (err) {
+    console.error('Failed to load guild data:', err);
     showToast(err.message || String(err), 'error');
     loadDemoData(guildId, guild);
-}
+  }
 }
 
 // ═══════════════════════════════════════════════
@@ -1335,7 +1334,6 @@ function handleModalBg(e) {
 }
 async function pickGuild(id) {
   closeGuildModal();
-  showToast('Loading server...', 'warn');
   await selectGuild(id);
 }
 function escHtml(str) {
@@ -1691,4 +1689,3 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-ml>
