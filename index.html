@@ -1241,8 +1241,10 @@ async function loadGuilds() {
 
   state.guilds = Array.isArray(data) ? data : (data.guilds || []);
 
-  // Auto-select if only one guild
+  // Auto-select if only one guild — small wait lets the user_guilds upsert
+  // finish on the edge function side before selectGuild fires its auth check
   if (state.guilds.length === 1) {
+    await new Promise(r => setTimeout(r, 400));
     await selectGuild(state.guilds[0].id);
   }
 }
@@ -1333,6 +1335,7 @@ function handleModalBg(e) {
 }
 async function pickGuild(id) {
   closeGuildModal();
+  showToast('Loading server...', 'warn');
   await selectGuild(id);
 }
 function escHtml(str) {
