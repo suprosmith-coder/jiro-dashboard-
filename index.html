@@ -1052,13 +1052,12 @@ function startOAuth() {
 
 async function handleOAuthCallback(code, returnedState) {
   const savedState = sessionStorage.getItem('oauth_state');
-  // Only enforce state check if we actually stored one and Discord returned one
   if (savedState && returnedState && returnedState !== savedState) {
     sessionStorage.removeItem('oauth_state');
     console.error('OAuth state mismatch — possible CSRF');
     return false;
   }
-  setLoadingMsg('Exchanging auth code...');
+  setLoadingMsg('Signing you in...');
   try {
     const res = await fetch(`${CONFIG.API_BASE}/functions/v1/discord-oauth`, {
       method: 'POST',
@@ -1068,7 +1067,7 @@ async function handleOAuthCallback(code, returnedState) {
     window.history.replaceState({}, document.title, window.location.origin + window.location.pathname);
     sessionStorage.removeItem('oauth_state');
     if (!res.ok) {
-      console.error('discord-oauth function returned', res.status, await res.text().catch(()=>''));
+      console.error('discord-oauth returned', res.status, await res.text().catch(() => ''));
       return false;
     }
     const data = await res.json();
@@ -1076,7 +1075,12 @@ async function handleOAuthCallback(code, returnedState) {
       console.error('discord-oauth: no access_token in response', data);
       return false;
     }
+    // Save token
     localStorage.setItem('jiro_token', data.access_token);
+    // discord-oauth already fetched user + guilds — cache them so boot()
+    // skips redundant API calls on fresh login
+    if (data.user)   sessionStorage.setItem('jiro_user',   JSON.stringify(data.user));
+    if (data.guilds) sessionStorage.setItem('jiro_guilds', JSON.stringify(data.guilds));
     return true;
   } catch (err) {
     console.error('handleOAuthCallback error:', err);
@@ -1113,22 +1117,34 @@ async function boot() {
   if (!token) { hideLoading(); showLogin(); return; }
   state.token = token;
 
-  setLoadingMsg('Loading your profile...');
-  try {
-    await loadUser();
-  } catch (err) {
-    // Only wipe token & go to login if it's a genuine 401 (token expired)
-    // Network errors / Discord downtime should NOT log the user out
-    if (err.message && err.message.includes('expired')) {
-      hideLoading(); showLogin(); return;
-    }
-    console.warn('loadUser failed (non-auth error):', err);
-    // Continue anyway — guilds might still work
-  }
+  // ── Use data cached by handleOAuthCallback if available (fresh login) ──
+  const cachedUser   = sessionStorage.getItem('jiro_user');
+  const cachedGuilds = sessionStorage.getItem('jiro_guilds');
 
-  setLoadingMsg('Fetching your servers...');
-  try { await loadGuilds(); }
-  catch (err) { console.warn('loadGuilds failed:', err); }
+  if (cachedUser && cachedGuilds) {
+    // Fresh login — discord-oauth already did all the work, use it directly
+    setLoadingMsg('Loading your profile...');
+    applyUserData(JSON.parse(cachedUser));
+    state.guilds = JSON.parse(cachedGuilds);
+    sessionStorage.removeItem('jiro_user');
+    sessionStorage.removeItem('jiro_guilds');
+    if (state.guilds.length === 1) await selectGuild(state.guilds[0].id);
+  } else {
+    // Returning visit — fetch fresh data
+    setLoadingMsg('Loading your profile...');
+    try {
+      await loadUser();
+    } catch (err) {
+      if (err.message && err.message.includes('expired')) {
+        hideLoading(); showLogin(); return;
+      }
+      console.warn('loadUser failed:', err);
+    }
+
+    setLoadingMsg('Fetching your servers...');
+    try { await loadGuilds(); }
+    catch (err) { console.warn('loadGuilds failed:', err); }
+  }
 
   hideLoading();
   showApp();
@@ -1182,19 +1198,27 @@ async function supabaseApi(path, opts = {}) {
 // ═══════════════════════════════════════════════
 //  USER + GUILDS
 // ═══════════════════════════════════════════════
-async function loadUser() {
-  const data = await discordApi('/users/@me');
+function applyUserData(data) {
   state.user = data;
-  const initial = data.username ? data.username[0].toUpperCase() : '?';
+  const initial   = data.username ? data.username[0].toUpperCase() : '?';
   const avatarWrap = document.getElementById('user-avatar-wrap');
-  if (data.avatar) {
-    avatarWrap.innerHTML = `<img src="https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.webp?size=64" alt="">`;
+  const avatarUrl  = data.avatar
+    // discord-oauth returns full URL; discordApi returns just the hash
+    ? (data.avatar.startsWith('http') ? data.avatar : `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.webp?size=64`)
+    : null;
+  if (avatarUrl) {
+    avatarWrap.innerHTML = `<img src="${avatarUrl}" alt="">`;
   } else {
     document.getElementById('user-avatar-initial').textContent = initial;
   }
   document.getElementById('user-display-name').textContent = data.global_name || data.username || 'Unknown';
   const disc = data.discriminator && data.discriminator !== '0' ? `#${data.discriminator}` : '';
   document.getElementById('user-discriminator').textContent = disc;
+}
+
+async function loadUser() {
+  const data = await discordApi('/users/@me');
+  applyUserData(data);
 }
 
 async function loadGuilds() {
